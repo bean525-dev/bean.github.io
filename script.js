@@ -2,7 +2,6 @@ const canvas = document.getElementById('titleCanvas');
 const ctx = canvas.getContext('2d');
 let currentSeries = "";
 
-// DATA STRUCTURE
 const seriesData = {
     "TOS": {
         templates: [
@@ -39,7 +38,6 @@ const seriesData = {
     }
 };
 
-// EDITOR CONTROL
 function openEditor(fullName, code) {
     currentSeries = code;
     document.getElementById('picker-screen').style.display = 'none';
@@ -70,22 +68,23 @@ function goBack() {
     document.getElementById('editor-screen').style.display = 'none';
 }
 
-// GENERATION LOGIC
 async function generateCard() {
     const textInput = document.getElementById('user-title').value;
     const writerInput = document.getElementById('user-writer').value || "JAMES SCHMERER";
     const tempIndex = document.getElementById('template-select').value || 0;
     const s = seriesData[currentSeries].templates[tempIndex];
     
+    // Formatting Logic
     let title = "";
     if (currentSeries === "TOS" || currentSeries === "DS9" || currentSeries === "VOY") {
         title = `"${textInput.toUpperCase()}"`;
     } else if (currentSeries === "TNG") {
-        title = `"${textInput}"`; 
+        title = `"${textInput}"`; // TNG Mixed Case + Quotes
     } else {
-        title = textInput.toUpperCase();
+        title = textInput.toUpperCase(); // TAS No Quotes
     }
 
+    // Load the font explicitly using the template-level font name
     await document.fonts.load(`${s.size}px "${s.font}"`);
 
     const img = new Image();
@@ -112,7 +111,6 @@ async function generateCard() {
     };
 }
 
-// DRAWING FUNCTIONS
 function drawTOS(text, s, size) {
     const lines = text.split('\n');
     let curX = canvas.width * s.x;
