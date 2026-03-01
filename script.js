@@ -39,26 +39,38 @@ const seriesData = {
 };
 
 function openEditor(fullName, code) {
+    console.log("Opening editor for:", code); // Diagnostic
     currentSeries = code;
+    
+    // Switch Screens
     document.getElementById('picker-screen').style.display = 'none';
     document.getElementById('editor-screen').style.display = 'block';
     document.getElementById('series-display-name').innerText = fullName;
-    document.getElementById('writer-group').style.display = (code === "TAS") ? "block" : "none";
+    
+    // Toggle Writer input for TAS
+    const writerGroup = document.getElementById('writer-group');
+    if (writerGroup) writerGroup.style.display = (code === "TAS") ? "block" : "none";
 
+    // Populate Templates
     const select = document.getElementById('template-select');
-    select.innerHTML = ""; 
-    seriesData[code].templates.forEach((temp, index) => {
-        let opt = document.createElement('option');
-        opt.value = index;
-        opt.innerHTML = temp.name;
-        select.appendChild(opt);
-    });
+    if (select) {
+        select.innerHTML = ""; 
+        seriesData[code].templates.forEach((temp, index) => {
+            let opt = document.createElement('option');
+            opt.value = index;
+            opt.innerHTML = temp.name;
+            select.appendChild(opt);
+        });
+    }
 
+    // Set Defaults
     const titleBox = document.getElementById('user-title');
-    if (code === "TOS") titleBox.value = "THE CITY ON\nTHE EDGE OF FOREVER";
-    else if (code === "TAS") titleBox.value = "THE VOID\nOF THE\nGALACTIC\nRIM";
-    else if (code === "TNG") titleBox.value = "The Measure of a Man";
-    else titleBox.value = "EPISODE TITLE";
+    if (titleBox) {
+        if (code === "TOS") titleBox.value = "THE CITY ON\nTHE EDGE OF FOREVER";
+        else if (code === "TAS") titleBox.value = "THE VOID\nOF THE\nGALACTIC\nRIM";
+        else if (code === "TNG") titleBox.value = "The Measure of a Man";
+        else titleBox.value = "EPISODE TITLE";
+    }
 
     generateCard();
 }
@@ -69,6 +81,8 @@ function goBack() {
 }
 
 async function generateCard() {
+    if (!currentSeries) return;
+
     const textInput = document.getElementById('user-title').value;
     const writerInput = document.getElementById('user-writer').value || "JAMES SCHMERER";
     const tempIndex = document.getElementById('template-select').value || 0;
@@ -148,3 +162,28 @@ function drawGradient(text, s, size) {
     const lines = text.split('\n');
     let curY = canvas.height * s.y;
     lines.forEach(line => {
+        let grad = ctx.createLinearGradient(0, curY, 0, curY + size);
+        grad.addColorStop(0, s.top);
+        grad.addColorStop(1, s.bottom);
+        ctx.fillStyle = grad;
+        ctx.fillText(line, canvas.width * s.x, curY);
+        curY += size + 10;
+    });
+}
+
+function drawStandard(text, s, size) {
+    const lines = text.split('\n');
+    let curY = canvas.height * s.y;
+    ctx.fillStyle = s.color;
+    lines.forEach(line => {
+        ctx.fillText(line, canvas.width * s.x, curY);
+        curY += size + 10;
+    });
+}
+
+function downloadImage() {
+    const link = document.createElement('a');
+    link.download = `trek-title.png`;
+    link.href = canvas.toDataURL();
+    link.click();
+}
