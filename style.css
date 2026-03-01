@@ -97,3 +97,9 @@ input {
     border: none; font-weight: bold; cursor: pointer; text-transform: uppercase; 
 }
 .btn-back { background: none; color: #f0ad4e; border: 1px solid #f0ad4e; float: left; }
+@font-face { font-family: 'TOS-Font'; src: url('fonts/TOS_Title.ttf'); }
+@font-face { font-family: 'TAS-Font'; src: url('fonts/TAS_title.otf'); }
+@font-face { font-family: 'TNG-Font'; src: url('fonts/Crillee.otf'); }
+@font-face { font-family: 'DS9-Font'; src: url('fonts/handel.ttf'); }
+@font-face { font-family: 'VOY-Font'; src: url('fonts/handel.ttf'); }
+@font-face { font-family: 'Galaxy-Font'; src: url('fonts/galaxy.otf'); }
