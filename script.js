@@ -2,35 +2,62 @@ const canvas = document.getElementById('titleCanvas');
 const ctx = canvas.getContext('2d');
 let currentSeries = "";
 
-// MAPPING: These should match your Python script's logic
-const config = {
+// DATA MAPPED FROM YOUR PYTHON SCRIPT
+const seriesData = {
     "TOS": {
-        bg: "images/TOS_BG.jpg", // Change to your actual BG filename
         font: "TOS-Font",
-        size: 100,
-        color: "#FFFF00",
-        type: "staggered"
+        templates: [
+            { name: "Standard Yellow", bg: "TOS_bg.jpg", color: "yellow", size: 100, x: 0.08, y: 0.15, indent: 120, spacing: 30, wrap: 20 },
+            { name: "Mirror Planet", bg: "TOS_mirror.png", color: "yellow", size: 100, x: 0.08, y: 0.15, indent: 100, spacing: 20, wrap: 25 },
+            { name: "Spock's Brain Hull", bg: "TOS_hull.png", color: "#7da6ff", size: 95, x: 0.25, y: 0.68, indent: 75, spacing: 20, wrap: 22 }
+        ]
+    },
+    "TAS": {
+        font: "TAS-Font",
+        templates: [
+            { name: "Standard Planet", bg: "TAS_bg.png", color: "#dcb442", size: 175, x: 0.12, y: 0.42, wrap: 10 }
+        ]
     },
     "TNG": {
-        bg: "images/TNG_BG.jpg",
         font: "TNG-Font",
-        size: 80,
-        color: "#FFFFFF",
-        type: "centered"
+        templates: [
+            { name: "Standard Top Left", bg: "TNG_bg.jpg", color: "#5286ff", size: 65, x: 0.08, y: 0.12, wrap: 40 },
+            { name: "High Corner Left", bg: "TNG_enemy.png", color: "#5286ff", size: 65, x: 0.05, y: 0.08, wrap: 40 },
+            { name: "Asteroid Variant", bg: "TNG_asteroid.png", color: "#5286ff", size: 65, x: 0.12, y: 0.12, wrap: 40 }
+        ]
     },
     "DS9": {
-        bg: "images/DS9_BG.jpg",
         font: "DS9-Font",
-        size: 90,
-        type: "gradient"
+        templates: [
+            { name: "Standard Top Left", bg: "DS9_bg.jpg", top: "#e0e0e0", bottom: "#7da6ff", size: 42, x: 0.1, y: 0.12, wrap: 34 },
+            { name: "High Right", bg: "DS9_adversary.png", top: "#e0e0e0", bottom: "#7da6ff", size: 42, x: 0.1, y: 0.12, wrap: 34 },
+            { name: "Shakaar Variant", bg: "DS9_shakaar.png", top: "#e0e0e0", bottom: "#7da6ff", size: 42, x: 0.12, y: 0.10, wrap: 34 }
+        ]
+    },
+    "VOY": {
+        font: "VOY-Font",
+        templates: [
+            { name: "Standard Top Left", bg: "VOY_bg.jpg", top: "#FF4F00", bottom: "#FFCC99", size: 44, x: 0.08, y: 0.12, wrap: 35 },
+            { name: "Saucer Overlap", bg: "VOY_latent.png", top: "#FF4F00", bottom: "#FFCC99", size: 44, x: 0.12, y: 0.08, wrap: 35 },
+            { name: "Ex Post Facto", bg: "VOY_facto.png", top: "#FF4F00", bottom: "#FFCC99", size: 40, x: 0.08, y: 0.12, wrap: 35 }
+        ]
     }
 };
 
-function openEditor(series) {
-    currentSeries = series;
+function openEditor(fullName, code) {
+    currentSeries = code;
     document.getElementById('picker-screen').style.display = 'none';
     document.getElementById('editor-screen').style.display = 'block';
-    document.getElementById('series-title').innerText = series;
+    document.getElementById('series-display-name').innerText = fullName;
+
+    const select = document.getElementById('template-select');
+    select.innerHTML = ""; 
+    seriesData[code].templates.forEach((temp, index) => {
+        let opt = document.createElement('option');
+        opt.value = index;
+        opt.innerHTML = temp.name;
+        select.appendChild(opt);
+    });
 }
 
 function goBack() {
@@ -38,53 +65,74 @@ function goBack() {
     document.getElementById('editor-screen').style.display = 'none';
 }
 
-function generate() {
-    const text = document.getElementById('user-text').value.toUpperCase();
-    const settings = config[currentSeries];
+function generateCard() {
+    const textInput = document.getElementById('user-title').value;
+    let title = (currentSeries === "TAS") ? textInput : `"${textInput}"`.toUpperCase();
+    
+    const tempIndex = document.getElementById('template-select').value;
+    const s = seriesData[currentSeries].templates[tempIndex];
+    const fontName = seriesData[currentSeries].font;
+
     const img = new Image();
-    img.src = settings.bg;
+    img.src = `images/${s.bg}`; 
 
     img.onload = () => {
         canvas.width = img.width;
         canvas.height = img.height;
         ctx.drawImage(img, 0, 0);
+        
+        // Auto-shrink font if title is long (as per your Python logic)
+        let fontSize = s.size;
+        if (currentSeries !== "TAS" && title.length > 25) fontSize = Math.floor(s.size * 0.70);
+        
+        ctx.font = `${fontSize}px ${fontName}`;
+        ctx.textBaseline = "top";
 
-        ctx.font = `${settings.size}px ${settings.font}`;
-        ctx.textBaseline = "middle";
-
-        if (settings.type === "staggered") {
-            // TOS logic: one word per line, shifting right
-            let words = text.split(" ");
-            let x = 150;
-            let y = 300;
-            words.forEach(word => {
-                ctx.fillStyle = "black"; // Shadow
-                ctx.fillText(word, x+4, y+4);
-                ctx.fillStyle = settings.color;
-                ctx.fillText(word, x, y);
-                x += 80;
-                y += settings.size + 20;
-            });
-        } else if (settings.type === "gradient") {
-            // DS9 logic: Top-to-bottom gold gradient
-            ctx.textAlign = "center";
-            let grad = ctx.createLinearGradient(0, 400, 0, 500);
-            grad.addColorStop(0, "#f0ad4e");
-            grad.addColorStop(1, "#8b4513");
-            ctx.fillStyle = grad;
-            ctx.fillText(text, canvas.width/2, 450);
+        if (currentSeries === "TOS") {
+            drawTOS(title, s, fontSize, fontName);
+        } else if (s.top) {
+            drawGradient(title, s, fontSize, fontName);
         } else {
-            // TNG logic: Simple centered text
-            ctx.textAlign = "center";
-            ctx.fillStyle = settings.color;
-            ctx.fillText(text, canvas.width/2, canvas.height/2);
+            drawStandard(title, s, fontSize, fontName);
         }
     };
 }
 
-function download() {
+function drawTOS(text, s, size, font) {
+    let words = text.split(" ");
+    let curX = canvas.width * s.x;
+    let curY = canvas.height * s.y;
+
+    words.forEach(word => {
+        ctx.fillStyle = "black";
+        ctx.fillText(word, curX + 5, curY + 5);
+        ctx.fillStyle = s.color;
+        ctx.fillText(word, curX, curY);
+        curX += s.indent;
+        curY += size + s.spacing;
+    });
+}
+
+function drawGradient(text, s, size, font) {
+    const startX = canvas.width * s.x;
+    const startY = canvas.height * s.y;
+    
+    let grad = ctx.createLinearGradient(0, startY, 0, startY + size);
+    grad.addColorStop(0, s.top);
+    grad.addColorStop(1, s.bottom);
+    
+    ctx.fillStyle = grad;
+    ctx.fillText(text, startX, startY);
+}
+
+function drawStandard(text, s, size, font) {
+    ctx.fillStyle = s.color;
+    ctx.fillText(text, canvas.width * s.x, canvas.height * s.y);
+}
+
+function downloadImage() {
     const link = document.createElement('a');
-    link.download = 'trek-title.png';
+    link.download = `trek-title.png`;
     link.href = canvas.toDataURL();
     link.click();
 }
