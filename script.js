@@ -2,7 +2,7 @@ const canvas = document.getElementById('titleCanvas');
 const ctx = canvas.getContext('2d');
 let currentSeries = "";
 
-// 4:3 Standard Resolution
+// LOCK Resolution to 4:3 Standard
 const TARGET_WIDTH = 1440;
 const TARGET_HEIGHT = 1080;
 
@@ -108,9 +108,11 @@ async function generateCard() {
     img.src = `images/${s.bg}`; 
 
     img.onload = () => {
+        // FORCE CANVAS SIZE
         canvas.width = TARGET_WIDTH;
         canvas.height = TARGET_HEIGHT;
         
+        // FORCE IMAGE TO FILL CANVAS (Stretching smaller images to 1440x1080)
         ctx.drawImage(img, 0, 0, TARGET_WIDTH, TARGET_HEIGHT);
         
         ctx.font = `${s.size}px "${s.font}", Arial, sans-serif`;
@@ -129,6 +131,7 @@ async function generateCard() {
     };
 }
 
+// ... (Rest of draw functions remain exactly the same as previous working versions)
 function drawTOS(text, s, size) {
     const lines = text.split('\n');
     let curX = canvas.width * s.x;
@@ -149,12 +152,10 @@ function drawTAS(text, writer, s, size) {
     let curY = canvas.height * s.y;
     let curX = canvas.width * s.x;
     const lineHeight = size * 0.8; 
-
     lines.forEach(line => {
         ctx.fillText(line, curX, curY);
         curY += lineHeight; 
     });
-    
     if (writer && writer.trim() !== "") {
         ctx.font = `${s.creditSize}px "${s.font}", Arial, sans-serif`;
         ctx.textAlign = "center";
