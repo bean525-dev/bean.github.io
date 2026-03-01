@@ -72,8 +72,10 @@ function goBack() {
 
 async function generateCard() {
     if (!currentSeries) return;
+
     const textInput = document.getElementById('user-title').value;
-    const writerInput = document.getElementById('user-writer').value || "JAMES SCHMERER";
+    const writerElem = document.getElementById('user-writer');
+    const writerInput = (writerElem) ? writerElem.value : "JAMES SCHMERER";
     const tempIndex = document.getElementById('template-select').value || 0;
     const s = seriesData[currentSeries].templates[tempIndex];
     
@@ -86,19 +88,23 @@ async function generateCard() {
         title = textInput.toUpperCase();
     }
 
-    try {
-        await document.fonts.load(`${s.size}px "${s.font}"`);
-    } catch (e) { console.log("Font load failed, continuing with fallback."); }
-
     const img = new Image();
+    img.crossOrigin = "anonymous";
     img.src = `images/${s.bg}`; 
 
-    img.onload = () => {
-        canvas.width = img.width || 1920;
-        canvas.height = img.height || 1080;
+    img.onload = async () => {
+        canvas.width = img.width;
+        canvas.height = img.height;
         ctx.drawImage(img, 0, 0);
         
-        ctx.font = `${s.size}px "${s.font}", sans-serif`;
+        // Font loading is now wrapped so it can't kill the image drawing
+        try {
+            await document.fonts.load(`${s.size}px "${s.font}"`);
+        } catch (e) {
+            console.warn("Font failed to load, using system fallback.");
+        }
+
+        ctx.font = `${s.size}px "${s.font}", Arial, sans-serif`;
         ctx.textBaseline = "top";
         ctx.textAlign = "left";
 
@@ -112,16 +118,14 @@ async function generateCard() {
             drawStandard(title, s, s.size);
         }
     };
-    
+
     img.onerror = () => {
-        // DIAGNOSTIC FALLBACK: Draw a placeholder so we know pathing is the issue
-        canvas.width = 1920; canvas.height = 1080;
-        ctx.fillStyle = "#333";
-        ctx.fillRect(0,0, canvas.width, canvas.height);
+        // This will now actually trigger if the path is wrong
+        ctx.fillStyle = "black";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
         ctx.fillStyle = "white";
-        ctx.font = "40px Arial";
-        ctx.fillText("IMAGE LOAD ERROR: images/" + s.bg, 50, 50);
-        console.error("Critical Path Error: images/" + s.bg);
+        ctx.font = "30px Arial";
+        ctx.fillText("Error: Could not find images/" + s.bg, 50, 50);
     };
 }
 
@@ -134,9 +138,53 @@ function drawTOS(text, s, size) {
         ctx.fillText(line, curX + 5, curY + 5);
         ctx.fillStyle = s.color;
         ctx.fillText(line, curX, curY);
-        curX += (s.indent || 100);
-        curY += (size + (s.spacing || 20));
+        curX += s.indent;
+        curY += size + s.spacing;
     });
 }
 
-// ... (Rest of drawing functions remain the same)
+function drawTAS(text, writer, s, size) {
+    const lines = text.split('\n');
+    ctx.fillStyle = s.color;
+    let curY = canvas.height * s.y;
+    let curX = canvas.width * s.x;
+    lines.forEach(line => {
+        ctx.fillText(line, curX, curY);
+        curY += size - 10; 
+    });
+    if (writer) {
+        ctx.font = `${s.creditSize}px "${s.font}", Arial, sans-serif`;
+        ctx.textAlign = "center";
+        ctx.fillText(`WRITTEN BY ${writer.toUpperCase()}`, canvas.width * 0.5, canvas.height * 0.88);
+    }
+}
+
+function drawGradient(text, s, size) {
+    const lines = text.split('\n');
+    let curY = canvas.height * s.y;
+    lines.forEach(line => {
+        let grad = ctx.createLinearGradient(0, curY, 0, curY + size);
+        grad.addColorStop(0, s.top);
+        grad.addColorStop(1, s.bottom);
+        ctx.fillStyle = grad;
+        ctx.fillText(line, canvas.width * s.x, curY);
+        curY += size + 10;
+    });
+}
+
+function drawStandard(text, s, size) {
+    const lines = text.split('\n');
+    let curY = canvas.height * s.y;
+    ctx.fillStyle = s.color;
+    lines.forEach(line => {
+        ctx.fillText(line, canvas.width * s.x, curY);
+        curY += size + 10;
+    });
+}
+
+function downloadImage() {
+    const link = document.createElement('a');
+    link.download = `trek-title.png`;
+    link.href = canvas.toDataURL();
+    link.click();
+}
