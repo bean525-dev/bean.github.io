@@ -1,0 +1,50 @@
+body {
+    background-color: #000;
+    color: #f0ad4e; /* Star Trek Gold */
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    text-align: center;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 40px;
+}
+
+.card {
+    border: 1px solid #444;
+    padding: 15px;
+    background: #111;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.card:hover { border-color: #f0ad4e; transform: scale(1.05); }
+
+.card img { width: 100%; height: auto; margin-bottom: 10px; }
+
+canvas {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #333;
+    margin-top: 20px;
+}
+
+input {
+    padding: 15px;
+    width: 80%;
+    background: #222;
+    border: 1px solid #f0ad4e;
+    color: white;
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+
+button {
+    padding: 10px 25px;
+    cursor: pointer;
+    font-weight: bold;
+    text-transform: uppercase;
+}
