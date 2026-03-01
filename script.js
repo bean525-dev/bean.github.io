@@ -88,11 +88,14 @@ async function generateCard() {
         title = textInput.toUpperCase();
     }
 
-    // 1. Force the font to load BEFORE the image logic starts
+    // 1. Pre-load the font. Using Promise.race to prevent infinite hanging.
     try {
-        await document.fonts.load(`${s.size}px "${s.font}"`);
+        await Promise.race([
+            document.fonts.load(`${s.size}px "${s.font}"`),
+            new Promise(resolve => setTimeout(resolve, 800))
+        ]);
     } catch (e) {
-        console.error("Manual font load failed:", e);
+        console.warn("Font pre-load issue, proceeding with fallback.");
     }
 
     const img = new Image();
@@ -104,7 +107,7 @@ async function generateCard() {
         canvas.height = img.height;
         ctx.drawImage(img, 0, 0);
         
-        // 2. Assign font with fallbacks
+        // 2. Set the context font (Matches CSS font-family name)
         ctx.font = `${s.size}px "${s.font}", Arial, sans-serif`;
         ctx.textBaseline = "top";
         ctx.textAlign = "left";
@@ -121,7 +124,7 @@ async function generateCard() {
     };
 
     img.onerror = () => {
-        console.error("Failed to load image at: images/" + s.bg);
+        console.error("Image load failed: images/" + s.bg);
     };
 }
 
@@ -130,10 +133,13 @@ function drawTOS(text, s, size) {
     let curX = canvas.width * s.x;
     let curY = canvas.height * s.y;
     lines.forEach(line => {
+        // Shadow offset
         ctx.fillStyle = "black";
         ctx.fillText(line, curX + 5, curY + 5);
+        // Foreground
         ctx.fillStyle = s.color;
         ctx.fillText(line, curX, curY);
+        // Stagger/Climb logic
         curX += s.indent;
         curY += size + s.spacing;
     });
