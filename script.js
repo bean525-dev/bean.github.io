@@ -2,10 +2,11 @@ const canvas = document.getElementById('titleCanvas');
 const ctx = canvas.getContext('2d');
 let currentSeries = "";
 
+// DATA STRUCTURE
 const seriesData = {
     "TOS": {
         templates: [
-            { name: "Standard Yellow", bg: "TOS_bg.jpg", font: "TOS-Font", color: "yellow", size: 100, x: 0.08, y: 0.15, indent: 120, spacing: 30 },
+            { name: "Standard Yellow", bg: "TOS_bg.png", font: "TOS-Font", color: "yellow", size: 100, x: 0.08, y: 0.15, indent: 120, spacing: 30 },
             { name: "Mirror Planet", bg: "TOS_mirror.png", font: "TOS-Font", color: "yellow", size: 100, x: 0.08, y: 0.15, indent: 100, spacing: 20 },
             { name: "Hull Variant", bg: "TOS_hull.png", font: "TOS-Font", color: "#7da6ff", size: 95, x: 0.25, y: 0.68, indent: 75, spacing: 20 }
         ]
@@ -38,6 +39,7 @@ const seriesData = {
     }
 };
 
+// EDITOR CONTROL
 function openEditor(fullName, code) {
     currentSeries = code;
     document.getElementById('picker-screen').style.display = 'none';
@@ -68,6 +70,7 @@ function goBack() {
     document.getElementById('editor-screen').style.display = 'none';
 }
 
+// GENERATION LOGIC
 async function generateCard() {
     const textInput = document.getElementById('user-title').value;
     const writerInput = document.getElementById('user-writer').value || "JAMES SCHMERER";
@@ -75,14 +78,12 @@ async function generateCard() {
     const s = seriesData[currentSeries].templates[tempIndex];
     
     let title = "";
-    
-    // Quotes + Casing Logic
     if (currentSeries === "TOS" || currentSeries === "DS9" || currentSeries === "VOY") {
         title = `"${textInput.toUpperCase()}"`;
     } else if (currentSeries === "TNG") {
-        title = `"${textInput}"`; // Mandatory quotes, Mixed Case preserved
+        title = `"${textInput}"`; 
     } else {
-        title = textInput.toUpperCase(); // TAS (No quotes)
+        title = textInput.toUpperCase();
     }
 
     await document.fonts.load(`${s.size}px "${s.font}"`);
@@ -111,6 +112,7 @@ async function generateCard() {
     };
 }
 
+// DRAWING FUNCTIONS
 function drawTOS(text, s, size) {
     const lines = text.split('\n');
     let curX = canvas.width * s.x;
