@@ -3,89 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Star Trek Title Card Generator</title>
+    <title>Trek Title Generator</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-<div id="app-wrapper">
-    <section id="picker-screen" class="container">
-        <header>
-            <h1>STAR TREK</h1>
-            <h3>TITLE CARD GENERATOR</h3>
-            <p>Select a series to begin</p>
-        </header>
-        
+    <div id="picker-screen" class="container">
+        <h1>STAR TREK TITLE GENERATOR</h1>
         <div class="show-grid">
             <div class="show-card" onclick="openEditor('The Original Series', 'TOS')">
-                <div class="img-container">
-                    <img src="images/TOS.jpg" alt="TOS">
-                </div>
+                <div class="img-container"><img src="images/TOS.jpg"></div>
                 <div class="show-name">THE ORIGINAL SERIES</div>
             </div>
-
             <div class="show-card" onclick="openEditor('The Animated Series', 'TAS')">
-                <div class="img-container">
-                    <img src="images/TAS.jpg" alt="TAS">
-                </div>
+                <div class="img-container"><img src="images/TAS.jpg"></div>
                 <div class="show-name">THE ANIMATED SERIES</div>
             </div>
-
             <div class="show-card" onclick="openEditor('The Next Generation', 'TNG')">
-                <div class="img-container">
-                    <img src="images/tng.jpg" alt="TNG">
-                </div>
+                <div class="img-container"><img src="images/tng.jpg"></div>
                 <div class="show-name">THE NEXT GENERATION</div>
             </div>
-
             <div class="show-card" onclick="openEditor('Deep Space 9', 'DS9')">
-                <div class="img-container">
-                    <img src="images/ds9.jpg" alt="DS9">
-                </div>
+                <div class="img-container"><img src="images/ds9.jpg"></div>
                 <div class="show-name">DEEP SPACE 9</div>
             </div>
-
             <div class="show-card" onclick="openEditor('Voyager', 'VOY')">
-                <div class="img-container">
-                    <img src="images/voy.jpg" alt="VOY">
-                </div>
+                <div class="img-container"><img src="images/voy.jpg"></div>
                 <div class="show-name">VOYAGER</div>
             </div>
         </div>
-    </section>
+    </div>
 
-    <section id="editor-screen" class="container" style="display: none;">
+    <div id="editor-screen" class="container">
         <div class="toolbar">
-            <button class="btn-back" onclick="goBack()">← BACK TO FLEET</button>
-            <h2 id="series-display-name">Series Name</h2>
+            <button class="btn-back" onclick="goBack()">BACK</button>
+            <h2 id="series-display-name"></h2>
         </div>
-
         <div class="editor-layout">
             <div class="controls">
                 <div class="input-group">
                     <label>EPISODE TITLE</label>
-                    <input type="text" id="user-title" placeholder="ENTER TITLE..." autocomplete="off">
+                    <input type="text" id="user-title" placeholder="ENTER TITLE...">
                 </div>
-
                 <div class="input-group">
-                    <label>BACKGROUND TEMPLATE</label>
-                    <select id="template-select" onchange="generateCard()">
-                        </select>
+                    <label>TEMPLATE</label>
+                    <select id="template-select" onchange="generateCard()"></select>
                 </div>
-
                 <div class="button-row">
                     <button class="btn-engage" onclick="generateCard()">ENGAGE</button>
                     <button class="btn-download" onclick="downloadImage()">DOWNLOAD</button>
                 </div>
             </div>
-
-            <div class="preview-pane">
-                <canvas id="titleCanvas"></canvas>
-            </div>
+            <canvas id="titleCanvas"></canvas>
         </div>
-    </section>
-</div>
-
-<script src="script.js"></script>
+    </div>
+    <script src="script.js"></script>
 </body>
 </html>
