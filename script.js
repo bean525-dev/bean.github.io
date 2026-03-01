@@ -88,22 +88,24 @@ async function generateCard() {
         title = textInput.toUpperCase();
     }
 
+    // 1. Force the font to load BEFORE the image logic starts
+    try {
+        await document.fonts.load(`${s.size}px "${s.font}"`);
+    } catch (e) {
+        console.error("Manual font load failed:", e);
+    }
+
     const img = new Image();
     img.crossOrigin = "anonymous";
     img.src = `images/${s.bg}`; 
 
-    img.onload = async () => {
+    img.onload = () => {
         canvas.width = img.width;
         canvas.height = img.height;
         ctx.drawImage(img, 0, 0);
         
-        // Ensure font is ready
-        try {
-            await document.fonts.load(`${s.size}px "${s.font}"`);
-        } catch (e) { console.warn("Font loading error."); }
-
-        // Use the font defined in CSS/seriesData
-        ctx.font = s.size + "px " + s.font + ", Arial, sans-serif";
+        // 2. Assign font with fallbacks
+        ctx.font = `${s.size}px "${s.font}", Arial, sans-serif`;
         ctx.textBaseline = "top";
         ctx.textAlign = "left";
 
@@ -116,6 +118,10 @@ async function generateCard() {
         } else {
             drawStandard(title, s, s.size);
         }
+    };
+
+    img.onerror = () => {
+        console.error("Failed to load image at: images/" + s.bg);
     };
 }
 
@@ -143,7 +149,7 @@ function drawTAS(text, writer, s, size) {
         curY += size - 10; 
     });
     if (writer) {
-        ctx.font = s.creditSize + "px " + s.font + ", Arial, sans-serif";
+        ctx.font = `${s.creditSize}px "${s.font}", Arial, sans-serif`;
         ctx.textAlign = "center";
         ctx.fillText(`WRITTEN BY ${writer.toUpperCase()}`, canvas.width * 0.5, canvas.height * 0.88);
     }
