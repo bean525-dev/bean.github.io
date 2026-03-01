@@ -5,7 +5,7 @@ let currentSeries = "";
 const seriesData = {
     "TOS": {
         templates: [
-            { name: "Standard Yellow", bg: "TOS_bg.png", font: "TOS-Font", color: "yellow", size: 100, x: 0.08, y: 0.15, indent: 120, spacing: 30 },
+            { name: "Standard Yellow", bg: "TOS_bg.jpg", font: "TOS-Font", color: "yellow", size: 100, x: 0.08, y: 0.15, indent: 120, spacing: 30 },
             { name: "Mirror Planet", bg: "TOS_mirror.png", font: "TOS-Font", color: "yellow", size: 100, x: 0.08, y: 0.15, indent: 100, spacing: 20 },
             { name: "Hull Variant", bg: "TOS_hull.png", font: "TOS-Font", color: "#7da6ff", size: 95, x: 0.25, y: 0.68, indent: 75, spacing: 20 }
         ]
@@ -111,6 +111,10 @@ async function generateCard() {
             drawStandard(title, s, s.size);
         }
     };
+    
+    img.onerror = () => {
+        console.error("Image not found: images/" + s.bg);
+    };
 }
 
 function drawTOS(text, s, size) {
@@ -122,7 +126,6 @@ function drawTOS(text, s, size) {
         ctx.fillText(line, curX + 5, curY + 5);
         ctx.fillStyle = s.color;
         ctx.fillText(line, curX, curY);
-        // This is the staggered increment from your working Githack logic
         curX += s.indent;
         curY += size + s.spacing;
     });
