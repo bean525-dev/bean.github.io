@@ -74,20 +74,19 @@ async function generateCard() {
     const tempIndex = document.getElementById('template-select').value || 0;
     const s = seriesData[currentSeries].templates[tempIndex];
     
-    // Formatting Logic
     let title = "";
     if (currentSeries === "TOS" || currentSeries === "DS9" || currentSeries === "VOY") {
         title = `"${textInput.toUpperCase()}"`;
     } else if (currentSeries === "TNG") {
-        title = `"${textInput}"`; // TNG Mixed Case + Quotes
+        title = `"${textInput}"`; 
     } else {
-        title = textInput.toUpperCase(); // TAS No Quotes
+        title = textInput.toUpperCase();
     }
 
-    // Load the font explicitly using the template-level font name
     await document.fonts.load(`${s.size}px "${s.font}"`);
 
     const img = new Image();
+    img.crossOrigin = "anonymous";
     img.src = `images/${s.bg}`; 
 
     img.onload = () => {
@@ -108,6 +107,10 @@ async function generateCard() {
         } else {
             drawStandard(title, s, s.size);
         }
+    };
+
+    img.onerror = () => {
+        console.error("Failed to load image: images/" + s.bg);
     };
 }
 
@@ -145,28 +148,3 @@ function drawGradient(text, s, size) {
     const lines = text.split('\n');
     let curY = canvas.height * s.y;
     lines.forEach(line => {
-        let grad = ctx.createLinearGradient(0, curY, 0, curY + size);
-        grad.addColorStop(0, s.top);
-        grad.addColorStop(1, s.bottom);
-        ctx.fillStyle = grad;
-        ctx.fillText(line, canvas.width * s.x, curY);
-        curY += size + 10;
-    });
-}
-
-function drawStandard(text, s, size) {
-    const lines = text.split('\n');
-    let curY = canvas.height * s.y;
-    ctx.fillStyle = s.color;
-    lines.forEach(line => {
-        ctx.fillText(line, canvas.width * s.x, curY);
-        curY += size + 10;
-    });
-}
-
-function downloadImage() {
-    const link = document.createElement('a');
-    link.download = `trek-title.png`;
-    link.href = canvas.toDataURL();
-    link.click();
-}
