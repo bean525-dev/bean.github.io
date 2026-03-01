@@ -15,10 +15,19 @@ const seriesData = {
         ]
     },
     "TAS": {
-        templates: [
-            { name: "Planet", bg: "TAS_bg.png", font: "TAS-Font", color: "#dcb442", size: 175, x: 0.1, y: 0.1, creditSize: 45 }
-        ]
-    },
+    templates: [
+        { 
+            name: "Planet", 
+            bg: "TAS_bg.png", 
+            font: "TAS-Font", 
+            color: "#dcb442", 
+            size: 210,        // Beefed up from 175
+            x: 0.12,          // Nudged right (from 0.1)
+            y: 0.12,          // Nudged down slightly for breathing room
+            creditSize: 60    // Increased from 45/50 for readability
+        }
+    ]
+},
     "TNG": {
         templates: [
             { name: "Standard", bg: "TNG_bg.jpg", font: "TNG-Font", color: "#5286ff", size: 130, x: 0.08, y: 0.12 }, 
