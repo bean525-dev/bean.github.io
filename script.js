@@ -5,38 +5,47 @@ let currentSeries = "";
 const seriesData = {
     "TOS": {
         templates: [
-            { name: "Standard Yellow", bg: "TOS_bg.jpg", font: "TOS-Font", color: "yellow", size: 100, x: 0.08, y: 0.15, indent: 120, spacing: 30 },
-            { name: "Mirror Planet", bg: "TOS_mirror.png", font: "TOS-Font", color: "yellow", size: 100, x: 0.08, y: 0.15, indent: 100, spacing: 20 },
-            { name: "Hull Variant", bg: "TOS_hull.png", font: "TOS-Font", color: "#7da6ff", size: 95, x: 0.25, y: 0.68, indent: 75, spacing: 20 }
+            { name: "Planet Orbit", bg: "TOS_bg.jpg", font: "TOS-Font", color: "yellow", size: 100, x: 0.08, y: 0.15, indent: 120, spacing: 30 },
+            { name: "Mirror Planet Orbit", bg: "TOS_mirror.png", font: "TOS-Font", color: "yellow", size: 100, x: 0.08, y: 0.15, indent: 100, spacing: 20 },
+            { name: "On The Hull", bg: "TOS_hull.png", font: "TOS-Font", color: "#7da6ff", size: 95, x: 0.25, y: 0.68, indent: 75, spacing: 20 }
         ]
     },
     "TAS": {
         templates: [
-            { name: "Standard Planet", bg: "TAS_bg.png", font: "TAS-Font", color: "#dcb442", size: 175, x: 0.1, y: 0.1, creditSize: 45 }
+            { name: "Planet", bg: "TAS_bg.png", font: "TAS-Font", color: "#dcb442", size: 175, x: 0.1, y: 0.1, creditSize: 45 }
         ]
     },
     "TNG": {
         templates: [
-            { name: "Standard (Crillee)", bg: "TNG_bg.jpg", font: "TNG-Font", color: "#5286ff", size: 65, x: 0.08, y: 0.12 },
-            { name: "Enemy (Crillee)", bg: "TNG_enemy.png", font: "TNG-Font", color: "#5286ff", size: 65, x: 0.05, y: 0.08 },
-            { name: "Asteroid (Crillee)", bg: "TNG_asteroid.png", font: "TNG-Font", color: "#5286ff", size: 65, x: 0.12, y: 0.12 }
+            { name: "Standard", bg: "TNG_bg.jpg", font: "TNG-Font", color: "#5286ff", size: 65, x: 0.08, y: 0.12 },
+            { name: "Alternate", bg: "TNG_enemy.png", font: "TNG-Font", color: "#5286ff", size: 65, x: 0.05, y: 0.08 },
+            { name: "Asteroid", bg: "TNG_asteroid.png", font: "TNG-Font", color: "#5286ff", size: 65, x: 0.12, y: 0.12 }
         ]
     },
     "DS9": {
         templates: [
-            { name: "Standard", bg: "DS9_bg.jpg", font: "DS9-Font", top: "#e0e0e0", bottom: "#7da6ff", size: 42, x: 0.1, y: 0.12 },
-            { name: "Adversary", bg: "DS9_adversary.png", font: "DS9-Font", top: "#e0e0e0", bottom: "#7da6ff", size: 42, x: 0.1, y: 0.12 },
-            { name: "Shakaar", bg: "DS9_shakaar.png", font: "DS9-Font", top: "#e0e0e0", bottom: "#7da6ff", size: 42, x: 0.12, y: 0.10 }
+            { name: "Station", bg: "DS9_bg.jpg", font: "DS9-Font", top: "#e0e0e0", bottom: "#7da6ff", size: 42, x: 0.1, y: 0.12 },
+            { name: "Station View 2", bg: "DS9_adversary.png", font: "DS9-Font", top: "#e0e0e0", bottom: "#7da6ff", size: 42, x: 0.1, y: 0.12 },
+            { name: "Station View 3", bg: "DS9_shakaar.png", font: "DS9-Font", top: "#e0e0e0", bottom: "#7da6ff", size: 42, x: 0.12, y: 0.10 }
         ]
     },
     "VOY": {
         templates: [
-            { name: "Standard (Handel)", bg: "VOY_bg.jpg", font: "VOY-Font", top: "#FF4F00", bottom: "#FFCC99", size: 44, x: 0.08, y: 0.12 },
-            { name: "Saucer (Handel)", bg: "VOY_latent.png", font: "VOY-Font", top: "#FF4F00", bottom: "#FFCC99", size: 44, x: 0.12, y: 0.08 },
-            { name: "Ex Post Facto (Galaxy)", bg: "VOY_facto.png", font: "Galaxy-Font", top: "#FF4F00", bottom: "#FFCC99", size: 40, x: 0.08, y: 0.12 }
+            { name: "Zoomed Out", bg: "VOY_bg.jpg", font: "VOY-Font", top: "#FF4F00", bottom: "#FFCC99", size: 44, x: 0.08, y: 0.12 },
+            { name: "Underside", bg: "VOY_latent.png", font: "VOY-Font", top: "#FF4F00", bottom: "#FFCC99", size: 44, x: 0.12, y: 0.08 },
+            { name: "Overview", bg: "VOY_facto.png", font: "Galaxy-Font", top: "#FF4F00", bottom: "#FFCC99", size: 40, x: 0.08, y: 0.12 }
         ]
     }
 };
+
+// HELPER: Auto-generate whenever inputs change
+function setupListeners() {
+    const inputs = ['user-title', 'user-writer', 'template-select'];
+    inputs.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('input', generateCard);
+    });
+}
 
 function openEditor(fullName, code) {
     currentSeries = code;
@@ -60,8 +69,11 @@ function openEditor(fullName, code) {
     if (code === "TOS") titleBox.value = "THE CITY ON\nTHE EDGE OF FOREVER";
     else if (code === "TAS") titleBox.value = "THE VOID\nOF THE\nGALACTIC\nRIM";
     else if (code === "TNG") titleBox.value = "The Measure of a Man";
+    else if (code === "DS9") titleBox.value = "In The Pale Moonlight";
+    else if (code === "VOY") titleBox.value = "Treshhold";
     else titleBox.value = "EPISODE TITLE";
 
+    setupListeners(); // Ensure listeners are active
     generateCard();
 }
 
@@ -75,7 +87,7 @@ async function generateCard() {
 
     const textInput = document.getElementById('user-title').value;
     const writerElem = document.getElementById('user-writer');
-    const writerInput = (writerElem) ? writerElem.value : "JAMES SCHMERER";
+    const writerInput = (writerElem) ? writerElem.value : "";
     const tempIndex = document.getElementById('template-select').value || 0;
     const s = seriesData[currentSeries].templates[tempIndex];
     
@@ -88,15 +100,9 @@ async function generateCard() {
         title = textInput.toUpperCase();
     }
 
-    // 1. Pre-load the font. Using Promise.race to prevent infinite hanging.
     try {
-        await Promise.race([
-            document.fonts.load(`${s.size}px "${s.font}"`),
-            new Promise(resolve => setTimeout(resolve, 800))
-        ]);
-    } catch (e) {
-        console.warn("Font pre-load issue, proceeding with fallback.");
-    }
+        await document.fonts.load(`${s.size}px "${s.font}"`);
+    } catch (e) {}
 
     const img = new Image();
     img.crossOrigin = "anonymous";
@@ -107,7 +113,6 @@ async function generateCard() {
         canvas.height = img.height;
         ctx.drawImage(img, 0, 0);
         
-        // 2. Set the context font (Matches CSS font-family name)
         ctx.font = `${s.size}px "${s.font}", Arial, sans-serif`;
         ctx.textBaseline = "top";
         ctx.textAlign = "left";
@@ -122,10 +127,6 @@ async function generateCard() {
             drawStandard(title, s, s.size);
         }
     };
-
-    img.onerror = () => {
-        console.error("Image load failed: images/" + s.bg);
-    };
 }
 
 function drawTOS(text, s, size) {
@@ -133,13 +134,10 @@ function drawTOS(text, s, size) {
     let curX = canvas.width * s.x;
     let curY = canvas.height * s.y;
     lines.forEach(line => {
-        // Shadow offset
         ctx.fillStyle = "black";
         ctx.fillText(line, curX + 5, curY + 5);
-        // Foreground
         ctx.fillStyle = s.color;
         ctx.fillText(line, curX, curY);
-        // Stagger/Climb logic
         curX += s.indent;
         curY += size + s.spacing;
     });
@@ -150,11 +148,16 @@ function drawTAS(text, writer, s, size) {
     ctx.fillStyle = s.color;
     let curY = canvas.height * s.y;
     let curX = canvas.width * s.x;
+    
+    // ADJUSTED: Tighter line spacing for TAS (0.8 multiplier)
+    const lineHeight = size * 0.8; 
+
     lines.forEach(line => {
         ctx.fillText(line, curX, curY);
-        curY += size - 10; 
+        curY += lineHeight; 
     });
-    if (writer) {
+    
+    if (writer && writer.trim() !== "") {
         ctx.font = `${s.creditSize}px "${s.font}", Arial, sans-serif`;
         ctx.textAlign = "center";
         ctx.fillText(`WRITTEN BY ${writer.toUpperCase()}`, canvas.width * 0.5, canvas.height * 0.88);
