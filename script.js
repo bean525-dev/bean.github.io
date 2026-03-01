@@ -18,7 +18,7 @@ const seriesData = {
     "TNG": {
         templates: [
             { name: "Standard Top Left", bg: "TNG_bg.jpg", font: "TNG-Font", color: "#5286ff", size: 65, x: 0.08, y: 0.12, wrap: 40 },
-            { name: "High Corner", bg: "TNG_enemy.png", font: "TNG-Font", color: "#5286ff", size: 65, x: 0.05, y: 0.08, wrap: 40 },
+            { name: "Enemy", bg: "TNG_enemy.png", font: "TNG-Font", color: "#5286ff", size: 65, x: 0.05, y: 0.08, wrap: 40 },
             { name: "Asteroid", bg: "TNG_asteroid.png", font: "TNG-Font", color: "#5286ff", size: 65, x: 0.12, y: 0.12, wrap: 40 }
         ]
     },
@@ -57,13 +57,15 @@ function goBack() {
     document.getElementById('editor-screen').style.display = 'none';
 }
 
-function generateCard() {
+async function generateCard() {
     const textInput = document.getElementById('user-title').value;
     const tempIndex = document.getElementById('template-select').value;
     const s = seriesData[currentSeries].templates[tempIndex];
     
-    // Quoting Logic
     let title = (currentSeries === "TAS") ? textInput : `"${textInput}"`.toUpperCase();
+
+    // FORCE FONT LOAD
+    await document.fonts.load(`${s.size}px "${s.font}"`);
 
     const img = new Image();
     img.src = `images/${s.bg}`; 
@@ -76,7 +78,6 @@ function generateCard() {
         let fontSize = s.size;
         if (currentSeries !== "TAS" && title.length > 25) fontSize = Math.floor(s.size * 0.70);
         
-        // Apply the template's specific font
         ctx.font = `${fontSize}px "${s.font}"`;
         ctx.textBaseline = "top";
 
@@ -85,7 +86,7 @@ function generateCard() {
         } else if (s.top) {
             drawGradient(title, s, fontSize);
         } else {
-            drawStandard(title, s, fontSize);
+            drawStandard(title, s);
         }
     };
 }
@@ -114,7 +115,7 @@ function drawGradient(text, s, size) {
     ctx.fillText(text, startX, startY);
 }
 
-function drawStandard(text, s, size) {
+function drawStandard(text, s) {
     ctx.fillStyle = s.color;
     ctx.fillText(text, canvas.width * s.x, canvas.height * s.y);
 }
