@@ -8,36 +8,69 @@
 </head>
 <body>
 
-    <div id="app">
-        <section id="picker-screen">
-            <h1>Select a Series</h1>
-            <div class="grid" id="series-grid">
-                </div>
-        </section>
-
-        <section id="editor-screen" style="display: none;">
-            <button class="btn-back" onclick="showPicker()">← Back</button>
-            <h2 id="current-series-name">Series Name</h2>
-            
-            <div class="controls">
-                <input type="text" id="episode-title" placeholder="ENTER EPISODE TITLE..." maxlength="60">
-                
-                <div id="template-selector-container">
-                    <label>Select Template:</label>
-                    <select id="template-select"></select>
-                </div>
-
-                <button class="btn-generate" onclick="generateCard()">Engage!</button>
+<div id="app-wrapper">
+    <section id="picker-screen" class="container">
+        <h1>Star Trek Title Card Generator</h1>
+        <p>Select a series to begin</p>
+        
+        <div class="show-grid">
+            <div class="show-card" onclick="openEditor('The Original Series', 'TOS')">
+                <img src="images/TOS.jpg" alt="TOS">
+                <div class="show-name">The Original Series</div>
             </div>
 
-            <div class="canvas-container">
-                <canvas id="titleCanvas"></canvas>
+            <div class="show-card" onclick="openEditor('The Animated Series', 'TAS')">
+                <img src="images/TAS.jpg" alt="TAS">
+                <div class="show-name">The Animated Series</div>
             </div>
-            
-            <button class="btn-download" onclick="downloadImage()">Download Image</button>
-        </section>
-    </div>
 
-    <script src="script.js"></script>
+            <div class="show-card" onclick="openEditor('The Next Generation', 'TNG')">
+                <img src="images/tng.jpg" alt="TNG">
+                <div class="show-name">The Next Generation</div>
+            </div>
+
+            <div class="show-card" onclick="openEditor('Deep Space 9', 'DS9')">
+                <img src="images/ds9.jpg" alt="DS9">
+                <div class="show-name">Deep Space 9</div>
+            </div>
+
+            <div class="show-card" onclick="openEditor('Voyager', 'VOY')">
+                <img src="images/voy.jpg" alt="VOY">
+                <div class="show-name">Voyager</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="editor-screen" class="container" style="display: none;">
+        <div class="toolbar">
+            <button class="btn-back" onclick="goBack()">← BACK</button>
+            <h2 id="series-display-name">Series Name</h2>
+        </div>
+
+        <div class="editor-controls">
+            <div class="input-group">
+                <label>Episode Title:</label>
+                <input type="text" id="user-title" placeholder="ENTER TITLE..." autocomplete="off">
+            </div>
+
+            <div class="input-group">
+                <label>Select Template:</label>
+                <select id="template-select" onchange="previewTemplate()">
+                    </select>
+            </div>
+
+            <div class="button-group">
+                <button class="btn-primary" onclick="generateCard()">ENGAGE</button>
+                <button class="btn-success" onclick="downloadImage()">DOWNLOAD</button>
+            </div>
+        </div>
+
+        <div class="preview-area">
+            <canvas id="titleCanvas"></canvas>
+        </div>
+    </section>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
