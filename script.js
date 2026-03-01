@@ -97,14 +97,13 @@ async function generateCard() {
         canvas.height = img.height;
         ctx.drawImage(img, 0, 0);
         
-        // Font loading is now wrapped so it can't kill the image drawing
+        // Ensure font is ready
         try {
             await document.fonts.load(`${s.size}px "${s.font}"`);
-        } catch (e) {
-            console.warn("Font failed to load, using system fallback.");
-        }
+        } catch (e) { console.warn("Font loading error."); }
 
-        ctx.font = `${s.size}px "${s.font}", Arial, sans-serif`;
+        // Use the font defined in CSS/seriesData
+        ctx.font = s.size + "px " + s.font + ", Arial, sans-serif";
         ctx.textBaseline = "top";
         ctx.textAlign = "left";
 
@@ -117,15 +116,6 @@ async function generateCard() {
         } else {
             drawStandard(title, s, s.size);
         }
-    };
-
-    img.onerror = () => {
-        // This will now actually trigger if the path is wrong
-        ctx.fillStyle = "black";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = "white";
-        ctx.font = "30px Arial";
-        ctx.fillText("Error: Could not find images/" + s.bg, 50, 50);
     };
 }
 
@@ -153,7 +143,7 @@ function drawTAS(text, writer, s, size) {
         curY += size - 10; 
     });
     if (writer) {
-        ctx.font = `${s.creditSize}px "${s.font}", Arial, sans-serif`;
+        ctx.font = s.creditSize + "px " + s.font + ", Arial, sans-serif";
         ctx.textAlign = "center";
         ctx.fillText(`WRITTEN BY ${writer.toUpperCase()}`, canvas.width * 0.5, canvas.height * 0.88);
     }
