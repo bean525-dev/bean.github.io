@@ -12,14 +12,14 @@ const seriesData = {
     },
     "TAS": {
         templates: [
-            { name: "Standard Planet", bg: "TAS_bg.png", font: "TAS-Font", color: "#dcb442", size: 175, x: 0.12, y: 0.42, creditSize: 45 }
+            { name: "Standard Planet", bg: "TAS_bg.png", font: "TAS-Font", color: "#dcb442", size: 135, x: 0.1, y: 0.1, creditSize: 45 }
         ]
     },
     "TNG": {
         templates: [
             { name: "Standard (Crillee)", bg: "TNG_bg.jpg", font: "TNG-Font", color: "#5286ff", size: 65, x: 0.08, y: 0.12 },
-            { name: "Enemy", bg: "TNG_enemy.png", font: "TNG-Font", color: "#5286ff", size: 65, x: 0.05, y: 0.08 },
-            { name: "Asteroid", bg: "TNG_asteroid.png", font: "TNG-Font", color: "#5286ff", size: 65, x: 0.12, y: 0.12 }
+            { name: "Enemy (Crillee)", bg: "TNG_enemy.png", font: "TNG-Font", color: "#5286ff", size: 65, x: 0.05, y: 0.08 },
+            { name: "Asteroid (Crillee)", bg: "TNG_asteroid.png", font: "TNG-Font", color: "#5286ff", size: 65, x: 0.12, y: 0.12 }
         ]
     },
     "DS9": {
@@ -44,7 +44,6 @@ function openEditor(fullName, code) {
     document.getElementById('editor-screen').style.display = 'block';
     document.getElementById('series-display-name').innerText = fullName;
     
-    // Show/Hide Writer field for TAS
     document.getElementById('writer-group').style.display = (code === "TAS") ? "block" : "none";
 
     const select = document.getElementById('template-select');
@@ -55,7 +54,14 @@ function openEditor(fullName, code) {
         opt.innerHTML = temp.name;
         select.appendChild(opt);
     });
-    generateCard(); // Generate default view immediately
+
+    // Set default text based on series to show an example immediately
+    const titleBox = document.getElementById('user-title');
+    if (code === "TOS") titleBox.value = "THE CITY ON\nTHE EDGE OF FOREVER";
+    else if (code === "TAS") titleBox.value = "THE VOID\nOF THE\nGALACTIC\nRIM";
+    else titleBox.value = "THE CORE OF THE MATTER";
+
+    generateCard();
 }
 
 function goBack() {
@@ -65,12 +71,13 @@ function goBack() {
 
 async function generateCard() {
     const textInput = document.getElementById('user-title').value;
-    const writerInput = document.getElementById('user-writer').value || "LARRY BRODY";
-    const tempIndex = document.getElementById('template-select').value;
+    const writerInput = document.getElementById('user-writer').value || "";
+    const tempIndex = document.getElementById('template-select').value || 0;
     const s = seriesData[currentSeries].templates[tempIndex];
     
     let title = (currentSeries === "TAS") ? textInput : `"${textInput}"`.toUpperCase();
 
+    // Ensure the font is loaded before drawing
     await document.fonts.load(`${s.size}px "${s.font}"`);
 
     const img = new Image();
@@ -82,7 +89,6 @@ async function generateCard() {
         ctx.drawImage(img, 0, 0);
         
         let fontSize = s.size;
-        if (currentSeries !== "TAS" && title.length > 25) fontSize = Math.floor(s.size * 0.70);
         
         ctx.font = `${fontSize}px "${s.font}"`;
         ctx.textBaseline = "top";
@@ -103,6 +109,7 @@ function drawTOS(text, s, size) {
     const lines = text.split('\n');
     let curX = canvas.width * s.x;
     let curY = canvas.height * s.y;
+    ctx.textAlign = "left";
     lines.forEach(line => {
         ctx.fillStyle = "black";
         ctx.fillText(line, curX + 5, curY + 5);
@@ -115,24 +122,29 @@ function drawTOS(text, s, size) {
 
 function drawTAS(text, writer, s, size) {
     const lines = text.split('\n');
-    let curY = (canvas.height * 0.42) - ((lines.length * size) / 2);
+    ctx.textAlign = "left"; // Changed from center to match your second image
     ctx.fillStyle = s.color;
-    
+
+    let curY = canvas.height * s.y;
+    let curX = canvas.width * s.x;
+
     lines.forEach(line => {
-        ctx.fillText(line.toUpperCase(), canvas.width * s.x, curY);
-        curY += size - 15; // Tight spacing for TAS
+        ctx.fillText(line.toUpperCase(), curX, curY);
+        curY += size - 10; 
     });
 
-    // Credits
-    ctx.font = `${s.creditSize}px "${s.font}"`;
-    ctx.textAlign = "center";
-    ctx.fillText(`WRITTEN BY ${writer.toUpperCase()}`, canvas.width * 0.5, curY + 50);
-    ctx.textAlign = "left"; // Reset
+    if (writer) {
+        ctx.font = `${s.creditSize}px "${s.font}"`;
+        // Credits stay centered at the bottom
+        ctx.textAlign = "center";
+        ctx.fillText(`WRITTEN BY ${writer.toUpperCase()}`, canvas.width * 0.5, canvas.height * 0.88);
+    }
 }
 
 function drawGradient(text, s, size) {
     const lines = text.split('\n');
     let curY = canvas.height * s.y;
+    ctx.textAlign = "left";
     lines.forEach(line => {
         let grad = ctx.createLinearGradient(0, curY, 0, curY + size);
         grad.addColorStop(0, s.top);
@@ -146,6 +158,7 @@ function drawGradient(text, s, size) {
 function drawStandard(text, s, size) {
     const lines = text.split('\n');
     let curY = canvas.height * s.y;
+    ctx.textAlign = "left";
     ctx.fillStyle = s.color;
     lines.forEach(line => {
         ctx.fillText(line, canvas.width * s.x, curY);
