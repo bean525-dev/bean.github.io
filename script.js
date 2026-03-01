@@ -12,7 +12,7 @@ const seriesData = {
     },
     "TAS": {
         templates: [
-            { name: "Standard Planet", bg: "TAS_bg.png", font: "TAS-Font", color: "#dcb442", size: 135, x: 0.1, y: 0.1, creditSize: 45 }
+            { name: "Standard Planet", bg: "TAS_bg.png", font: "TAS-Font", color: "#dcb442", size: 175, x: 0.1, y: 0.1, creditSize: 45 }
         ]
     },
     "TNG": {
@@ -43,7 +43,6 @@ function openEditor(fullName, code) {
     document.getElementById('picker-screen').style.display = 'none';
     document.getElementById('editor-screen').style.display = 'block';
     document.getElementById('series-display-name').innerText = fullName;
-    
     document.getElementById('writer-group').style.display = (code === "TAS") ? "block" : "none";
 
     const select = document.getElementById('template-select');
@@ -58,7 +57,8 @@ function openEditor(fullName, code) {
     const titleBox = document.getElementById('user-title');
     if (code === "TOS") titleBox.value = "THE CITY ON\nTHE EDGE OF FOREVER";
     else if (code === "TAS") titleBox.value = "THE VOID\nOF THE\nGALACTIC\nRIM";
-    else titleBox.value = "The Core of the Matter";
+    else if (code === "TNG") titleBox.value = "The Measure of a Man";
+    else titleBox.value = "EPISODE TITLE";
 
     generateCard();
 }
@@ -74,11 +74,15 @@ async function generateCard() {
     const tempIndex = document.getElementById('template-select').value || 0;
     const s = seriesData[currentSeries].templates[tempIndex];
     
-    // THE FIX: Only TAS and TOS get the special casing logic. 
-    // TNG, DS9, and VOY will now display exactly what the user types.
-    let title = textInput;
-    if (currentSeries === "TOS") {
+    let title = "";
+    
+    // Quotes + Casing Logic
+    if (currentSeries === "TOS" || currentSeries === "DS9" || currentSeries === "VOY") {
         title = `"${textInput.toUpperCase()}"`;
+    } else if (currentSeries === "TNG") {
+        title = `"${textInput}"`; // Mandatory quotes, Mixed Case preserved
+    } else {
+        title = textInput.toUpperCase(); // TAS (No quotes)
     }
 
     await document.fonts.load(`${s.size}px "${s.font}"`);
@@ -111,15 +115,11 @@ function drawTOS(text, s, size) {
     const lines = text.split('\n');
     let curX = canvas.width * s.x;
     let curY = canvas.height * s.y;
-    
     lines.forEach(line => {
-        // Drop Shadow
         ctx.fillStyle = "black";
         ctx.fillText(line, curX + 5, curY + 5);
-        // Main Text
         ctx.fillStyle = s.color;
         ctx.fillText(line, curX, curY);
-        
         curX += s.indent;
         curY += size + s.spacing;
     });
@@ -130,12 +130,10 @@ function drawTAS(text, writer, s, size) {
     ctx.fillStyle = s.color;
     let curY = canvas.height * s.y;
     let curX = canvas.width * s.x;
-
     lines.forEach(line => {
-        ctx.fillText(line.toUpperCase(), curX, curY);
+        ctx.fillText(line, curX, curY);
         curY += size - 10; 
     });
-
     if (writer) {
         ctx.font = `${s.creditSize}px "${s.font}"`;
         ctx.textAlign = "center";
