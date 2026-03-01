@@ -99,7 +99,18 @@ async function generateCard() {
     const tempIndex = document.getElementById('template-select').value || 0;
     const s = seriesData[currentSeries].templates[tempIndex];
     
-    let title = (currentSeries === "TNG") ? `"${textInput}"` : `"${textInput.toUpperCase()}"`;
+    // THE QUOTE LOGIC
+    let title = "";
+    if (currentSeries === "TAS") {
+        // No quotes, all caps for TAS
+        title = textInput.toUpperCase();
+    } else if (currentSeries === "TNG") {
+        // Mixed case with quotes for TNG
+        title = `"${textInput}"`;
+    } else {
+        // All caps with quotes for TOS, DS9, VOY
+        title = `"${textInput.toUpperCase()}"`;
+    }
 
     try {
         await document.fonts.load(`${s.size}px "${s.font}"`);
@@ -110,11 +121,9 @@ async function generateCard() {
     img.src = `images/${s.bg}`; 
 
     img.onload = () => {
-        // FORCE CANVAS SIZE
         canvas.width = TARGET_WIDTH;
         canvas.height = TARGET_HEIGHT;
         
-        // FORCE IMAGE TO FILL CANVAS (Stretching smaller images to 1440x1080)
         ctx.drawImage(img, 0, 0, TARGET_WIDTH, TARGET_HEIGHT);
         
         ctx.font = `${s.size}px "${s.font}", Arial, sans-serif`;
