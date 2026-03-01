@@ -21,22 +21,18 @@
                 <div class="img-container"><img src="images/TOS.jpg" alt="TOS"></div>
                 <div class="show-name">THE ORIGINAL SERIES</div>
             </div>
-
             <div class="show-card" onclick="openEditor('The Animated Series', 'TAS')">
                 <div class="img-container"><img src="images/TAS.jpg" alt="TAS"></div>
                 <div class="show-name">THE ANIMATED SERIES</div>
             </div>
-
             <div class="show-card" onclick="openEditor('The Next Generation', 'TNG')">
                 <div class="img-container"><img src="images/tng.jpg" alt="TNG"></div>
                 <div class="show-name">THE NEXT GENERATION</div>
             </div>
-
             <div class="show-card" onclick="openEditor('Deep Space 9', 'DS9')">
                 <div class="img-container"><img src="images/ds9.jpg" alt="DS9"></div>
                 <div class="show-name">DEEP SPACE 9</div>
             </div>
-
             <div class="show-card" onclick="openEditor('Voyager', 'VOY')">
                 <div class="img-container"><img src="images/voy.jpg" alt="VOY"></div>
                 <div class="show-name">VOYAGER</div>
@@ -53,34 +49,28 @@
         <div class="editor-layout">
             <div class="controls">
                 <div class="input-group">
-                    <label>EPISODE TITLE (PRESS ENTER FOR NEW LINE)</label>
-                    <textarea id="user-title" rows="3" oninput="generateCard()" placeholder="ENTER TITLE...">THE CITY ON&#10;THE EDGE OF FOREVER</textarea>
+                    <label>EPISODE TITLE</label>
+                    <textarea id="user-title" rows="4" oninput="generateCard()"></textarea>
                 </div>
-
                 <div id="writer-group" class="input-group" style="display:none;">
                     <label>WRITTEN BY</label>
-                    <input type="text" id="user-writer" oninput="generateCard()" placeholder="LARRY BRODY">
+                    <input type="text" id="user-writer" oninput="generateCard()" placeholder="JAMES SCHMERER">
                 </div>
-
                 <div class="input-group">
                     <label>BACKGROUND TEMPLATE</label>
-                    <select id="template-select" onchange="generateCard()">
-                        </select>
+                    <select id="template-select" onchange="generateCard()"></select>
                 </div>
-
                 <div class="button-row">
                     <button class="btn-engage" onclick="generateCard()">ENGAGE</button>
                     <button class="btn-download" onclick="downloadImage()">DOWNLOAD</button>
                 </div>
             </div>
-
             <div class="preview-pane">
                 <canvas id="titleCanvas"></canvas>
             </div>
         </div>
     </section>
 </div>
-
 <script src="script.js"></script>
 </body>
 </html>
