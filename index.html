@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Star Trek Title Card Generator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="app">
+        <section id="picker-screen">
+            <h1>Select a Series</h1>
+            <div class="grid" id="series-grid">
+                </div>
+        </section>
+
+        <section id="editor-screen" style="display: none;">
+            <button class="btn-back" onclick="showPicker()">← Back</button>
+            <h2 id="current-series-name">Series Name</h2>
+            
+            <div class="controls">
+                <input type="text" id="episode-title" placeholder="ENTER EPISODE TITLE..." maxlength="60">
+                
+                <div id="template-selector-container">
+                    <label>Select Template:</label>
+                    <select id="template-select"></select>
+                </div>
+
+                <button class="btn-generate" onclick="generateCard()">Engage!</button>
+            </div>
+
+            <div class="canvas-container">
+                <canvas id="titleCanvas"></canvas>
+            </div>
+            
+            <button class="btn-download" onclick="downloadImage()">Download Image</button>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
