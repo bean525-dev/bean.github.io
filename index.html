@@ -3,59 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trek Title Generator</title>
+    <title>Star Trek Title Card Generator</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="picker-screen" class="container">
-        <h1>STAR TREK TITLE GENERATOR</h1>
+
+<div id="app-wrapper">
+    <section id="picker-screen" class="container">
+        <header>
+            <h1>STAR TREK</h1>
+            <h3>TITLE CARD GENERATOR</h3>
+            <p>Select a series to begin</p>
+        </header>
+        
         <div class="show-grid">
             <div class="show-card" onclick="openEditor('The Original Series', 'TOS')">
-                <div class="img-container"><img src="images/TOS.jpg"></div>
+                <div class="img-container"><img src="images/TOS.jpg" alt="TOS"></div>
                 <div class="show-name">THE ORIGINAL SERIES</div>
             </div>
+
             <div class="show-card" onclick="openEditor('The Animated Series', 'TAS')">
-                <div class="img-container"><img src="images/TAS.jpg"></div>
+                <div class="img-container"><img src="images/TAS.jpg" alt="TAS"></div>
                 <div class="show-name">THE ANIMATED SERIES</div>
             </div>
+
             <div class="show-card" onclick="openEditor('The Next Generation', 'TNG')">
-                <div class="img-container"><img src="images/tng.jpg"></div>
+                <div class="img-container"><img src="images/tng.jpg" alt="TNG"></div>
                 <div class="show-name">THE NEXT GENERATION</div>
             </div>
+
             <div class="show-card" onclick="openEditor('Deep Space 9', 'DS9')">
-                <div class="img-container"><img src="images/ds9.jpg"></div>
+                <div class="img-container"><img src="images/ds9.jpg" alt="DS9"></div>
                 <div class="show-name">DEEP SPACE 9</div>
             </div>
+
             <div class="show-card" onclick="openEditor('Voyager', 'VOY')">
-                <div class="img-container"><img src="images/voy.jpg"></div>
+                <div class="img-container"><img src="images/voy.jpg" alt="VOY"></div>
                 <div class="show-name">VOYAGER</div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <div id="editor-screen" class="container">
+    <section id="editor-screen" class="container" style="display: none;">
         <div class="toolbar">
-            <button class="btn-back" onclick="goBack()">BACK</button>
-            <h2 id="series-display-name"></h2>
+            <button class="btn-back" onclick="goBack()">← BACK TO FLEET</button>
+            <h2 id="series-display-name">Series Name</h2>
         </div>
+
         <div class="editor-layout">
             <div class="controls">
                 <div class="input-group">
-                    <label>EPISODE TITLE</label>
-                    <input type="text" id="user-title" placeholder="ENTER TITLE...">
+                    <label>EPISODE TITLE (PRESS ENTER FOR NEW LINE)</label>
+                    <textarea id="user-title" rows="3" oninput="generateCard()" placeholder="ENTER TITLE...">THE CITY ON&#10;THE EDGE OF FOREVER</textarea>
                 </div>
+
+                <div id="writer-group" class="input-group" style="display:none;">
+                    <label>WRITTEN BY</label>
+                    <input type="text" id="user-writer" oninput="generateCard()" placeholder="LARRY BRODY">
+                </div>
+
                 <div class="input-group">
-                    <label>TEMPLATE</label>
-                    <select id="template-select" onchange="generateCard()"></select>
+                    <label>BACKGROUND TEMPLATE</label>
+                    <select id="template-select" onchange="generateCard()">
+                        </select>
                 </div>
+
                 <div class="button-row">
                     <button class="btn-engage" onclick="generateCard()">ENGAGE</button>
                     <button class="btn-download" onclick="downloadImage()">DOWNLOAD</button>
                 </div>
             </div>
-            <canvas id="titleCanvas"></canvas>
+
+            <div class="preview-pane">
+                <canvas id="titleCanvas"></canvas>
+            </div>
         </div>
-    </div>
-    <script src="script.js"></script>
+    </section>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
