@@ -1,5 +1,5 @@
-/* 1. FONTS - Case-sensitive paths for GitHub */
-@font-face { font-family: 'TOS-Font'; src: url('fonts/tos.woff2'); }
+/* 1. FONTS */
+@font-face { font-family: 'TOS-Font'; src: url('fonts/tos.woff2') format('woff2'); }
 @font-face { font-family: 'TAS-Font'; src: url('fonts/TAS_title.otf'); }
 @font-face { font-family: 'TNG-Font'; src: url('fonts/Crillee.otf'); }
 @font-face { font-family: 'DS9-Font'; src: url('fonts/handel.ttf'); }
@@ -22,16 +22,16 @@ body { background: #000; color: #f0ad4e; font-family: 'Segoe UI', sans-serif; ma
 /* 4. EDITOR LAYOUT */
 #editor-screen { display: none; }
 .toolbar { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #f0ad4e; margin-bottom: 30px; padding-bottom: 10px; }
-.btn-back { background: none; border: 1px solid #f0ad4e; color: #f0ad4e; padding: 8px 15px; cursor: pointer; }
+.btn-back { background: none; border: 1px solid #f0ad4e; color: #f0ad4e; padding: 8px 15px; cursor: pointer; font-weight: bold; }
 
 .editor-layout { display: flex; flex-direction: column; gap: 20px; align-items: center; }
 .controls { width: 100%; max-width: 500px; }
 .input-group { margin-bottom: 15px; text-align: left; }
-label { display: block; font-size: 0.8rem; margin-bottom: 5px; color: #f0ad4e; }
-input, select { width: 100%; padding: 12px; background: #222; border: 1px solid #444; color: #fff; }
+label { display: block; font-size: 0.8rem; margin-bottom: 5px; color: #f0ad4e; font-weight: bold; }
+input, select, textarea { width: 100%; padding: 12px; background: #222; border: 1px solid #444; color: #fff; box-sizing: border-box; }
 
-.button-row { display: flex; gap: 10px; margin-top: 20px; }
-.btn-engage { flex: 2; padding: 15px; background: #f0ad4e; border: none; font-weight: bold; cursor: pointer; }
-.btn-download { flex: 1; padding: 15px; background: #444; color: #fff; border: none; cursor: pointer; }
+.button-row { display: flex; gap: 10px; margin-top: 20px; width: 100%; }
+.btn-download { flex: 1; padding: 18px; background: #444; color: #fff; border: 1px solid #f0ad4e; font-weight: bold; cursor: pointer; transition: 0.2s; }
+.btn-download:hover { background: #f0ad4e; color: #000; }
 
-canvas { max-width: 100%; height: auto; border: 1px solid #333; margin-top: 20px; }
+canvas { max-width: 100%; height: auto; border: 1px solid #333; margin-top: 20px; background: #000; }
