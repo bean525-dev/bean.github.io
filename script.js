@@ -21,23 +21,25 @@ const seriesData = {
     },
     "TNG": {
         templates: [
-            { name: "Standard", bg: "TNG_bg.jpg", font: "TNG-Font", color: "#5286ff", size: 65, x: 0.08, y: 0.12 },
-            { name: "Alternate", bg: "TNG_enemy.png", font: "TNG-Font", color: "#5286ff", size: 65, x: 0.05, y: 0.08 },
-            { name: "Asteroid", bg: "TNG_asteroid.png", font: "TNG-Font", color: "#5286ff", size: 65, x: 0.12, y: 0.12 }
+            { name: "Standard", bg: "TNG_bg.jpg", font: "TNG-Font", color: "#5286ff", size: 130, x: 0.08, y: 0.12 }, 
+            { name: "Alternate", bg: "TNG_enemy.png", font: "TNG-Font", color: "#5286ff", size: 130, x: 0.05, y: 0.08 },
+            { name: "Asteroid", bg: "TNG_asteroid.png", font: "TNG-Font", color: "#5286ff", size: 130, x: 0.12, y: 0.12 }
         ]
     },
     "DS9": {
         templates: [
-            { name: "Station", bg: "DS9_bg.jpg", font: "DS9-Font", top: "#e0e0e0", bottom: "#7da6ff", size: 42, x: 0.1, y: 0.12 },
-            { name: "Station View 2", bg: "DS9_adversary.png", font: "DS9-Font", top: "#e0e0e0", bottom: "#7da6ff", size: 42, x: 0.1, y: 0.12 },
-            { name: "Station View 3", bg: "DS9_shakaar.png", font: "DS9-Font", top: "#e0e0e0", bottom: "#7da6ff", size: 42, x: 0.12, y: 0.10 }
+            // Scaled from 42 up to 86
+            { name: "Station", bg: "DS9_bg.jpg", font: "DS9-Font", top: "#e0e0e0", bottom: "#7da6ff", size: 86, x: 0.1, y: 0.12 }, 
+            { name: "Station View 2", bg: "DS9_adversary.png", font: "DS9-Font", top: "#e0e0e0", bottom: "#7da6ff", size: 86, x: 0.1, y: 0.12 },
+            { name: "Station View 3", bg: "DS9_shakaar.png", font: "DS9-Font", top: "#e0e0e0", bottom: "#7da6ff", size: 86, x: 0.12, y: 0.10 }
         ]
     },
     "VOY": {
         templates: [
-            { name: "Zoomed Out", bg: "VOY_bg.jpg", font: "VOY-Font", top: "#FF4F00", bottom: "#FFCC99", size: 44, x: 0.08, y: 0.12 },
-            { name: "Underside", bg: "VOY_latent.png", font: "VOY-Font", top: "#FF4F00", bottom: "#FFCC99", size: 44, x: 0.12, y: 0.08 },
-            { name: "Overview", bg: "VOY_facto.png", font: "Galaxy-Font", top: "#FF4F00", bottom: "#FFCC99", size: 40, x: 0.08, y: 0.12 }
+            // Scaled from 44 up to 90
+            { name: "Zoomed Out", bg: "VOY_bg.jpg", font: "VOY-Font", top: "#FF4F00", bottom: "#FFCC99", size: 90, x: 0.08, y: 0.12 },
+            { name: "Underside", bg: "VOY_latent.png", font: "VOY-Font", top: "#FF4F00", bottom: "#FFCC99", size: 90, x: 0.12, y: 0.08 },
+            { name: "Overview", bg: "VOY_facto.png", font: "Galaxy-Font", top: "#FF4F00", bottom: "#FFCC99", size: 82, x: 0.08, y: 0.12 }
         ]
     }
 };
