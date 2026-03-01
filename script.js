@@ -2,6 +2,10 @@ const canvas = document.getElementById('titleCanvas');
 const ctx = canvas.getContext('2d');
 let currentSeries = "";
 
+// 4:3 Standard Resolution
+const TARGET_WIDTH = 1440;
+const TARGET_HEIGHT = 1080;
+
 const seriesData = {
     "TOS": {
         templates: [
@@ -38,13 +42,11 @@ const seriesData = {
     }
 };
 
-// HELPER: Connects input fields to the generator so it updates in real-time
 function setupListeners() {
     const inputs = ['user-title', 'user-writer', 'template-select'];
     inputs.forEach(id => {
         const el = document.getElementById(id);
         if (el) {
-            // Remove old listeners to prevent stacking
             el.removeEventListener('input', generateCard);
             el.addEventListener('input', generateCard);
         }
@@ -95,14 +97,7 @@ async function generateCard() {
     const tempIndex = document.getElementById('template-select').value || 0;
     const s = seriesData[currentSeries].templates[tempIndex];
     
-    let title = "";
-    if (currentSeries === "TOS" || currentSeries === "DS9" || currentSeries === "VOY") {
-        title = `"${textInput.toUpperCase()}"`;
-    } else if (currentSeries === "TNG") {
-        title = `"${textInput}"`;
-    } else {
-        title = textInput.toUpperCase();
-    }
+    let title = (currentSeries === "TNG") ? `"${textInput}"` : `"${textInput.toUpperCase()}"`;
 
     try {
         await document.fonts.load(`${s.size}px "${s.font}"`);
@@ -113,9 +108,10 @@ async function generateCard() {
     img.src = `images/${s.bg}`; 
 
     img.onload = () => {
-        canvas.width = img.width;
-        canvas.height = img.height;
-        ctx.drawImage(img, 0, 0);
+        canvas.width = TARGET_WIDTH;
+        canvas.height = TARGET_HEIGHT;
+        
+        ctx.drawImage(img, 0, 0, TARGET_WIDTH, TARGET_HEIGHT);
         
         ctx.font = `${s.size}px "${s.font}", Arial, sans-serif`;
         ctx.textBaseline = "top";
@@ -152,7 +148,6 @@ function drawTAS(text, writer, s, size) {
     ctx.fillStyle = s.color;
     let curY = canvas.height * s.y;
     let curX = canvas.width * s.x;
-    
     const lineHeight = size * 0.8; 
 
     lines.forEach(line => {
