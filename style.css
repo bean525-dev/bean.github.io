@@ -1,47 +1,37 @@
-/* 1. FONTS - Check these against your GitHub /fonts/ folder! */
-@font-face { font-family: 'TOS-Font'; src: url('fonts/TOS_Title.ttf'); }
+/* 1. FONTS - Case-sensitive paths for GitHub */
+@font-face { font-family: 'TOS-Font'; src: url('fonts/TOS_title.ttf'); }
 @font-face { font-family: 'TAS-Font'; src: url('fonts/TAS_title.otf'); }
 @font-face { font-family: 'TNG-Font'; src: url('fonts/Crillee.otf'); }
 @font-face { font-family: 'DS9-Font'; src: url('fonts/handel.ttf'); }
 @font-face { font-family: 'VOY-Font'; src: url('fonts/handel.ttf'); }
 @font-face { font-family: 'Galaxy-Font'; src: url('fonts/galaxy.otf'); }
 
-/* 2. LAYOUT FIXES */
-body { background: #000; color: #f0ad4e; font-family: sans-serif; text-align: center; margin: 0; }
-.container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+/* 2. CORE STYLING */
+body { background: #000; color: #f0ad4e; font-family: 'Segoe UI', sans-serif; margin: 0; text-align: center; }
+.container { max-width: 1100px; margin: 0 auto; padding: 40px 20px; }
 
-.show-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-    margin-top: 30px;
-}
+/* 3. LANDING PAGE GRID */
+.show-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 25px; margin-top: 40px; }
+.show-card { background: #111; border: 2px solid #333; border-radius: 10px; overflow: hidden; cursor: pointer; transition: 0.3s; display: flex; flex-direction: column; }
+.show-card:hover { border-color: #f0ad4e; transform: translateY(-5px); }
 
-.show-card {
-    background: #111;
-    border: 2px solid #333;
-    border-radius: 8px;
-    cursor: pointer;
-    overflow: hidden;
-    transition: 0.2s;
-}
+.img-container { width: 100%; aspect-ratio: 16 / 9; overflow: hidden; background: #000; }
+.show-card img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
+.show-name { padding: 15px; color: #fff; font-weight: bold; font-size: 0.85rem; background: #1a1a1a; }
 
-.show-card:hover { border-color: #f0ad4e; transform: scale(1.03); }
+/* 4. EDITOR LAYOUT */
+#editor-screen { display: none; }
+.toolbar { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #f0ad4e; margin-bottom: 30px; padding-bottom: 10px; }
+.btn-back { background: none; border: 1px solid #f0ad4e; color: #f0ad4e; padding: 8px 15px; cursor: pointer; }
 
-/* This forces Blu-ray and small images to look identical */
-.img-container {
-    width: 100%;
-    aspect-ratio: 16 / 9; 
-    background: #000;
-}
+.editor-layout { display: flex; flex-direction: column; gap: 20px; align-items: center; }
+.controls { width: 100%; max-width: 500px; }
+.input-group { margin-bottom: 15px; text-align: left; }
+label { display: block; font-size: 0.8rem; margin-bottom: 5px; color: #f0ad4e; }
+input, select { width: 100%; padding: 12px; background: #222; border: 1px solid #444; color: #fff; }
 
-.show-card img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Crops the high-res edges to fit the 16:9 box */
-    object-position: center;
-}
+.button-row { display: flex; gap: 10px; margin-top: 20px; }
+.btn-engage { flex: 2; padding: 15px; background: #f0ad4e; border: none; font-weight: bold; cursor: pointer; }
+.btn-download { flex: 1; padding: 15px; background: #444; color: #fff; border: none; cursor: pointer; }
 
-.show-name { padding: 10px; color: #fff; font-size: 0.8rem; font-weight: bold; }
-
-/* ... keep the rest of your editor/button CSS ... */
+canvas { max-width: 100%; height: auto; border: 1px solid #333; margin-top: 20px; }
