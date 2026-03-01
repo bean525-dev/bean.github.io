@@ -5,34 +5,35 @@ let currentSeries = "";
 const seriesData = {
     "TOS": {
         templates: [
-            { name: "Standard Yellow", bg: "TOS_bg.jpg", font: "TOS-Font", color: "yellow", size: 100, x: 0.08, y: 0.15, indent: 120, spacing: 30, wrap: 20 },
-            { name: "Mirror Planet", bg: "TOS_mirror.png", font: "TOS-Font", color: "yellow", size: 100, x: 0.08, y: 0.15, indent: 100, spacing: 20, wrap: 25 },
-            { name: "Hull Variant", bg: "TOS_hull.png", font: "TOS-Font", color: "#7da6ff", size: 95, x: 0.25, y: 0.68, indent: 75, spacing: 20, wrap: 22 }
+            { name: "Standard Yellow", bg: "TOS_bg.jpg", font: "TOS-Font", color: "yellow", size: 100, x: 0.08, y: 0.15, indent: 120, spacing: 30 },
+            { name: "Mirror Planet", bg: "TOS_mirror.png", font: "TOS-Font", color: "yellow", size: 100, x: 0.08, y: 0.15, indent: 100, spacing: 20 },
+            { name: "Hull Variant", bg: "TOS_hull.png", font: "TOS-Font", color: "#7da6ff", size: 95, x: 0.25, y: 0.68, indent: 75, spacing: 20 }
         ]
     },
     "TAS": {
         templates: [
-            { name: "Standard Planet", bg: "TAS_bg.png", font: "TAS-Font", color: "#dcb442", size: 175, x: 0.12, y: 0.42, wrap: 10 }
+            { name: "Standard Planet", bg: "TAS_bg.png", font: "TAS-Font", color: "#dcb442", size: 175, x: 0.12, y: 0.42, creditSize: 45 }
         ]
     },
     "TNG": {
         templates: [
-            { name: "Standard Top Left", bg: "TNG_bg.jpg", font: "TNG-Font", color: "#5286ff", size: 65, x: 0.08, y: 0.12, wrap: 40 },
-            { name: "Enemy", bg: "TNG_enemy.png", font: "TNG-Font", color: "#5286ff", size: 65, x: 0.05, y: 0.08, wrap: 40 },
-            { name: "Asteroid", bg: "TNG_asteroid.png", font: "TNG-Font", color: "#5286ff", size: 65, x: 0.12, y: 0.12, wrap: 40 }
+            { name: "Standard (Crillee)", bg: "TNG_bg.jpg", font: "TNG-Font", color: "#5286ff", size: 65, x: 0.08, y: 0.12 },
+            { name: "Enemy", bg: "TNG_enemy.png", font: "TNG-Font", color: "#5286ff", size: 65, x: 0.05, y: 0.08 },
+            { name: "Asteroid", bg: "TNG_asteroid.png", font: "TNG-Font", color: "#5286ff", size: 65, x: 0.12, y: 0.12 }
         ]
     },
     "DS9": {
         templates: [
-            { name: "Standard", bg: "DS9_bg.jpg", font: "DS9-Font", top: "#e0e0e0", bottom: "#7da6ff", size: 42, x: 0.1, y: 0.12, wrap: 34 },
-            { name: "Adversary", bg: "DS9_adversary.png", font: "DS9-Font", top: "#e0e0e0", bottom: "#7da6ff", size: 42, x: 0.1, y: 0.12, wrap: 34 },
-            { name: "Shakaar", bg: "DS9_shakaar.png", font: "DS9-Font", top: "#e0e0e0", bottom: "#7da6ff", size: 42, x: 0.12, y: 0.10, wrap: 34 }
+            { name: "Standard", bg: "DS9_bg.jpg", font: "DS9-Font", top: "#e0e0e0", bottom: "#7da6ff", size: 42, x: 0.1, y: 0.12 },
+            { name: "Adversary", bg: "DS9_adversary.png", font: "DS9-Font", top: "#e0e0e0", bottom: "#7da6ff", size: 42, x: 0.1, y: 0.12 },
+            { name: "Shakaar", bg: "DS9_shakaar.png", font: "DS9-Font", top: "#e0e0e0", bottom: "#7da6ff", size: 42, x: 0.12, y: 0.10 }
         ]
     },
     "VOY": {
         templates: [
-            { name: "Standard (Handel)", bg: "VOY_bg.jpg", font: "VOY-Font", top: "#FF4F00", bottom: "#FFCC99", size: 44, x: 0.08, y: 0.12, wrap: 35 },
-            { name: "Ex Post Facto (Galaxy)", bg: "VOY_facto.png", font: "Galaxy-Font", top: "#FF4F00", bottom: "#FFCC99", size: 40, x: 0.08, y: 0.12, wrap: 35 }
+            { name: "Standard (Handel)", bg: "VOY_bg.jpg", font: "VOY-Font", top: "#FF4F00", bottom: "#FFCC99", size: 44, x: 0.08, y: 0.12 },
+            { name: "Saucer (Handel)", bg: "VOY_latent.png", font: "VOY-Font", top: "#FF4F00", bottom: "#FFCC99", size: 44, x: 0.12, y: 0.08 },
+            { name: "Ex Post Facto (Galaxy)", bg: "VOY_facto.png", font: "Galaxy-Font", top: "#FF4F00", bottom: "#FFCC99", size: 40, x: 0.08, y: 0.12 }
         ]
     }
 };
@@ -42,6 +43,10 @@ function openEditor(fullName, code) {
     document.getElementById('picker-screen').style.display = 'none';
     document.getElementById('editor-screen').style.display = 'block';
     document.getElementById('series-display-name').innerText = fullName;
+    
+    // Show/Hide Writer field for TAS
+    document.getElementById('writer-group').style.display = (code === "TAS") ? "block" : "none";
+
     const select = document.getElementById('template-select');
     select.innerHTML = ""; 
     seriesData[code].templates.forEach((temp, index) => {
@@ -50,6 +55,7 @@ function openEditor(fullName, code) {
         opt.innerHTML = temp.name;
         select.appendChild(opt);
     });
+    generateCard(); // Generate default view immediately
 }
 
 function goBack() {
@@ -59,12 +65,12 @@ function goBack() {
 
 async function generateCard() {
     const textInput = document.getElementById('user-title').value;
+    const writerInput = document.getElementById('user-writer').value || "LARRY BRODY";
     const tempIndex = document.getElementById('template-select').value;
     const s = seriesData[currentSeries].templates[tempIndex];
     
     let title = (currentSeries === "TAS") ? textInput : `"${textInput}"`.toUpperCase();
 
-    // FORCE FONT LOAD
     await document.fonts.load(`${s.size}px "${s.font}"`);
 
     const img = new Image();
@@ -83,41 +89,68 @@ async function generateCard() {
 
         if (currentSeries === "TOS") {
             drawTOS(title, s, fontSize);
+        } else if (currentSeries === "TAS") {
+            drawTAS(title, writerInput, s, fontSize);
         } else if (s.top) {
             drawGradient(title, s, fontSize);
         } else {
-            drawStandard(title, s);
+            drawStandard(title, s, fontSize);
         }
     };
 }
 
 function drawTOS(text, s, size) {
-    let words = text.split(" ");
+    const lines = text.split('\n');
     let curX = canvas.width * s.x;
     let curY = canvas.height * s.y;
-    words.forEach(word => {
+    lines.forEach(line => {
         ctx.fillStyle = "black";
-        ctx.fillText(word, curX + 5, curY + 5);
+        ctx.fillText(line, curX + 5, curY + 5);
         ctx.fillStyle = s.color;
-        ctx.fillText(word, curX, curY);
+        ctx.fillText(line, curX, curY);
         curX += s.indent;
         curY += size + s.spacing;
     });
 }
 
-function drawGradient(text, s, size) {
-    const startX = canvas.width * s.x;
-    const startY = canvas.height * s.y;
-    let grad = ctx.createLinearGradient(0, startY, 0, startY + size);
-    grad.addColorStop(0, s.top);
-    grad.addColorStop(1, s.bottom);
-    ctx.fillStyle = grad;
-    ctx.fillText(text, startX, startY);
+function drawTAS(text, writer, s, size) {
+    const lines = text.split('\n');
+    let curY = (canvas.height * 0.42) - ((lines.length * size) / 2);
+    ctx.fillStyle = s.color;
+    
+    lines.forEach(line => {
+        ctx.fillText(line.toUpperCase(), canvas.width * s.x, curY);
+        curY += size - 15; // Tight spacing for TAS
+    });
+
+    // Credits
+    ctx.font = `${s.creditSize}px "${s.font}"`;
+    ctx.textAlign = "center";
+    ctx.fillText(`WRITTEN BY ${writer.toUpperCase()}`, canvas.width * 0.5, curY + 50);
+    ctx.textAlign = "left"; // Reset
 }
 
-function drawStandard(text, s) {
+function drawGradient(text, s, size) {
+    const lines = text.split('\n');
+    let curY = canvas.height * s.y;
+    lines.forEach(line => {
+        let grad = ctx.createLinearGradient(0, curY, 0, curY + size);
+        grad.addColorStop(0, s.top);
+        grad.addColorStop(1, s.bottom);
+        ctx.fillStyle = grad;
+        ctx.fillText(line, canvas.width * s.x, curY);
+        curY += size + 10;
+    });
+}
+
+function drawStandard(text, s, size) {
+    const lines = text.split('\n');
+    let curY = canvas.height * s.y;
     ctx.fillStyle = s.color;
-    ctx.fillText(text, canvas.width * s.x, canvas.height * s.y);
+    lines.forEach(line => {
+        ctx.fillText(line, canvas.width * s.x, curY);
+        curY += size + 10;
+    });
 }
 
 function downloadImage() {
