@@ -38,12 +38,16 @@ const seriesData = {
     }
 };
 
-// HELPER: Auto-generate whenever inputs change
+// HELPER: Connects input fields to the generator so it updates in real-time
 function setupListeners() {
     const inputs = ['user-title', 'user-writer', 'template-select'];
     inputs.forEach(id => {
         const el = document.getElementById(id);
-        if (el) el.addEventListener('input', generateCard);
+        if (el) {
+            // Remove old listeners to prevent stacking
+            el.removeEventListener('input', generateCard);
+            el.addEventListener('input', generateCard);
+        }
     });
 }
 
@@ -69,11 +73,11 @@ function openEditor(fullName, code) {
     if (code === "TOS") titleBox.value = "THE CITY ON\nTHE EDGE OF FOREVER";
     else if (code === "TAS") titleBox.value = "THE VOID\nOF THE\nGALACTIC\nRIM";
     else if (code === "TNG") titleBox.value = "The Measure of a Man";
-    else if (code === "DS9") titleBox.value = "In The Pale Moonlight";
-    else if (code === "VOY") titleBox.value = "Treshhold";
+    else if (code === "DS9") titleBox.value = "In the Pale Moonlight";
+    else if (code === "VOY") titleBox.value = "Threshold";
     else titleBox.value = "EPISODE TITLE";
 
-    setupListeners(); // Ensure listeners are active
+    setupListeners(); 
     generateCard();
 }
 
@@ -149,7 +153,6 @@ function drawTAS(text, writer, s, size) {
     let curY = canvas.height * s.y;
     let curX = canvas.width * s.x;
     
-    // ADJUSTED: Tighter line spacing for TAS (0.8 multiplier)
     const lineHeight = size * 0.8; 
 
     lines.forEach(line => {
