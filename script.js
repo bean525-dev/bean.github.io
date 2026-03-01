@@ -55,11 +55,10 @@ function openEditor(fullName, code) {
         select.appendChild(opt);
     });
 
-    // Set default text based on series to show an example immediately
     const titleBox = document.getElementById('user-title');
     if (code === "TOS") titleBox.value = "THE CITY ON\nTHE EDGE OF FOREVER";
     else if (code === "TAS") titleBox.value = "THE VOID\nOF THE\nGALACTIC\nRIM";
-    else titleBox.value = "THE CORE OF THE MATTER";
+    else titleBox.value = "The Core of the Matter";
 
     generateCard();
 }
@@ -71,13 +70,17 @@ function goBack() {
 
 async function generateCard() {
     const textInput = document.getElementById('user-title').value;
-    const writerInput = document.getElementById('user-writer').value || "";
+    const writerInput = document.getElementById('user-writer').value || "JAMES SCHMERER";
     const tempIndex = document.getElementById('template-select').value || 0;
     const s = seriesData[currentSeries].templates[tempIndex];
     
-    let title = (currentSeries === "TAS") ? textInput : `"${textInput}"`.toUpperCase();
+    // THE FIX: Only TAS and TOS get the special casing logic. 
+    // TNG, DS9, and VOY will now display exactly what the user types.
+    let title = textInput;
+    if (currentSeries === "TOS") {
+        title = `"${textInput.toUpperCase()}"`;
+    }
 
-    // Ensure the font is loaded before drawing
     await document.fonts.load(`${s.size}px "${s.font}"`);
 
     const img = new Image();
@@ -88,19 +91,18 @@ async function generateCard() {
         canvas.height = img.height;
         ctx.drawImage(img, 0, 0);
         
-        let fontSize = s.size;
-        
-        ctx.font = `${fontSize}px "${s.font}"`;
+        ctx.font = `${s.size}px "${s.font}"`;
         ctx.textBaseline = "top";
+        ctx.textAlign = "left";
 
         if (currentSeries === "TOS") {
-            drawTOS(title, s, fontSize);
+            drawTOS(title, s, s.size);
         } else if (currentSeries === "TAS") {
-            drawTAS(title, writerInput, s, fontSize);
+            drawTAS(title, writerInput, s, s.size);
         } else if (s.top) {
-            drawGradient(title, s, fontSize);
+            drawGradient(title, s, s.size);
         } else {
-            drawStandard(title, s, fontSize);
+            drawStandard(title, s, s.size);
         }
     };
 }
@@ -109,12 +111,15 @@ function drawTOS(text, s, size) {
     const lines = text.split('\n');
     let curX = canvas.width * s.x;
     let curY = canvas.height * s.y;
-    ctx.textAlign = "left";
+    
     lines.forEach(line => {
+        // Drop Shadow
         ctx.fillStyle = "black";
         ctx.fillText(line, curX + 5, curY + 5);
+        // Main Text
         ctx.fillStyle = s.color;
         ctx.fillText(line, curX, curY);
+        
         curX += s.indent;
         curY += size + s.spacing;
     });
@@ -122,9 +127,7 @@ function drawTOS(text, s, size) {
 
 function drawTAS(text, writer, s, size) {
     const lines = text.split('\n');
-    ctx.textAlign = "left"; // Changed from center to match your second image
     ctx.fillStyle = s.color;
-
     let curY = canvas.height * s.y;
     let curX = canvas.width * s.x;
 
@@ -135,7 +138,6 @@ function drawTAS(text, writer, s, size) {
 
     if (writer) {
         ctx.font = `${s.creditSize}px "${s.font}"`;
-        // Credits stay centered at the bottom
         ctx.textAlign = "center";
         ctx.fillText(`WRITTEN BY ${writer.toUpperCase()}`, canvas.width * 0.5, canvas.height * 0.88);
     }
@@ -144,7 +146,6 @@ function drawTAS(text, writer, s, size) {
 function drawGradient(text, s, size) {
     const lines = text.split('\n');
     let curY = canvas.height * s.y;
-    ctx.textAlign = "left";
     lines.forEach(line => {
         let grad = ctx.createLinearGradient(0, curY, 0, curY + size);
         grad.addColorStop(0, s.top);
@@ -158,7 +159,6 @@ function drawGradient(text, s, size) {
 function drawStandard(text, s, size) {
     const lines = text.split('\n');
     let curY = canvas.height * s.y;
-    ctx.textAlign = "left";
     ctx.fillStyle = s.color;
     lines.forEach(line => {
         ctx.fillText(line, canvas.width * s.x, curY);
