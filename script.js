@@ -39,38 +39,28 @@ const seriesData = {
 };
 
 function openEditor(fullName, code) {
-    console.log("Opening editor for:", code); // Diagnostic
     currentSeries = code;
-    
-    // Switch Screens
     document.getElementById('picker-screen').style.display = 'none';
     document.getElementById('editor-screen').style.display = 'block';
     document.getElementById('series-display-name').innerText = fullName;
     
-    // Toggle Writer input for TAS
     const writerGroup = document.getElementById('writer-group');
     if (writerGroup) writerGroup.style.display = (code === "TAS") ? "block" : "none";
 
-    // Populate Templates
     const select = document.getElementById('template-select');
-    if (select) {
-        select.innerHTML = ""; 
-        seriesData[code].templates.forEach((temp, index) => {
-            let opt = document.createElement('option');
-            opt.value = index;
-            opt.innerHTML = temp.name;
-            select.appendChild(opt);
-        });
-    }
+    select.innerHTML = ""; 
+    seriesData[code].templates.forEach((temp, index) => {
+        let opt = document.createElement('option');
+        opt.value = index;
+        opt.innerHTML = temp.name;
+        select.appendChild(opt);
+    });
 
-    // Set Defaults
     const titleBox = document.getElementById('user-title');
-    if (titleBox) {
-        if (code === "TOS") titleBox.value = "THE CITY ON\nTHE EDGE OF FOREVER";
-        else if (code === "TAS") titleBox.value = "THE VOID\nOF THE\nGALACTIC\nRIM";
-        else if (code === "TNG") titleBox.value = "The Measure of a Man";
-        else titleBox.value = "EPISODE TITLE";
-    }
+    if (code === "TOS") titleBox.value = "THE CITY ON\nTHE EDGE OF FOREVER";
+    else if (code === "TAS") titleBox.value = "THE VOID\nOF THE\nGALACTIC\nRIM";
+    else if (code === "TNG") titleBox.value = "The Measure of a Man";
+    else titleBox.value = "EPISODE TITLE";
 
     generateCard();
 }
@@ -82,7 +72,6 @@ function goBack() {
 
 async function generateCard() {
     if (!currentSeries) return;
-
     const textInput = document.getElementById('user-title').value;
     const writerInput = document.getElementById('user-writer').value || "JAMES SCHMERER";
     const tempIndex = document.getElementById('template-select').value || 0;
@@ -92,7 +81,7 @@ async function generateCard() {
     if (currentSeries === "TOS" || currentSeries === "DS9" || currentSeries === "VOY") {
         title = `"${textInput.toUpperCase()}"`;
     } else if (currentSeries === "TNG") {
-        title = `"${textInput}"`; 
+        title = `"${textInput}"`;
     } else {
         title = textInput.toUpperCase();
     }
@@ -122,10 +111,6 @@ async function generateCard() {
             drawStandard(title, s, s.size);
         }
     };
-
-    img.onerror = () => {
-        console.error("Failed to load image: images/" + s.bg);
-    };
 }
 
 function drawTOS(text, s, size) {
@@ -137,6 +122,7 @@ function drawTOS(text, s, size) {
         ctx.fillText(line, curX + 5, curY + 5);
         ctx.fillStyle = s.color;
         ctx.fillText(line, curX, curY);
+        // This is the staggered increment from your working Githack logic
         curX += s.indent;
         curY += size + s.spacing;
     });
