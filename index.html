@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Star Trek Title Card Generator</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preload" href="fonts/galaxy.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://trek.epicrandomness.com/">
+    <meta property="og:title" content="Star Trek Title Card Generator">
+    <meta property="og:description" content="Make your own era-accurate Star Trek episode title cards in seconds. Boldly go!">
+    <meta property="og:image" content="https://trek.epicrandomness.com/images/og-preview.png">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Star Trek Title Card Generator">
+    <meta name="twitter:description" content="Make your own era-accurate Star Trek episode title cards.">
+    <meta name="twitter:image" content="https://trek.epicrandomness.com/images/og-preview.png">
+</head>
+<body>
+
+        <div style="font-family: 'Galaxy-Font'; position: absolute; visibility: hidden; height: 0; width: 0; pointer-events: none;">Preload</div>
+
+    <div id="picker-screen" class="container">
+        <h1>Select a Series</h1>
+        <div class="show-grid">
+            <div class="show-card" onclick="openEditor('The Original Series', 'TOS')">
+                <div class="img-container"><img src="images/TOS.jpg" alt="TOS"></div>
+                <div class="show-name">THE ORIGINAL SERIES</div>
+            </div>
+            <div class="show-card" onclick="openEditor('The Animated Series', 'TAS')">
+                <div class="img-container"><img src="images/TAS.jpg" alt="TAS"></div>
+                <div class="show-name">THE ANIMATED SERIES</div>
+            </div>
+            <div class="show-card" onclick="openEditor('The Next Generation', 'TNG')">
+                <div class="img-container"><img src="images/tng.jpg" alt="TNG"></div>
+                <div class="show-name">THE NEXT GENERATION</div>
+            </div>
+            <div class="show-card" onclick="openEditor('Deep Space Nine', 'DS9')">
+                <div class="img-container"><img src="images/ds9.jpg" alt="DS9"></div>
+                <div class="show-name">DEEP SPACE NINE</div>
+            </div>
+            <div class="show-card" onclick="openEditor('Voyager', 'VOY')">
+                <div class="img-container"><img src="images/voy.jpg" alt="VOY"></div>
+                <div class="show-name">VOYAGER</div>
+            </div>
+			<div class="show-card" onclick="openEditor('Enterprise', 'ENT')">
+                <div class="img-container"><img src="images/ent.jpg" alt="ENT"></div>
+                <div class="show-name">ENTERPRISE</div>
+            </div>
+			<div class="show-card" onclick="openEditor('Lower Decks', 'LD')">
+                <div class="img-container"><img src="images/ld.jpg" alt="LD"></div>
+                <div class="show-name">LOWER DECKS</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="editor-screen" class="container">
+        <div class="toolbar">
+            <button class="btn-back" onclick="goBack()">← BACK</button>
+            <h2 id="series-display-name">Series Name</h2>
+            <div style="width:70px;"></div> 
+        </div>
+
+        <div class="editor-layout">
+            <div class="controls">
+                <div class="input-group">
+                    <label>EPISODE TITLE</label>
+                    <textarea id="user-title" rows="3"></textarea>
+                </div>
+
+                <div id="writer-group" class="input-group" style="display:none;">
+                    <label>WRITTEN BY</label>
+                    <input type="text" id="user-writer" placeholder="Author Name">
+                </div>
+
+                <div class="input-group">
+                    <label>BACKGROUND TEMPLATE</label>
+                    <select id="template-select"></select>
+                </div>
+
+                <div class="input-group">
+                    <label for="user-font-size">EPISODE TITLE FONT SIZE (PX)</label>
+                    <input type="number" id="user-font-size" placeholder="Default Template Size" style="width: 100%; padding: 10px; background: #222; color: #fff; border: 1px solid #555; border-radius: 4px; font-weight: bold;">
+                </div>
+
+                <div class="input-group" id="writer-size-group">
+                    <label for="user-writer-size">WRITER FONT SIZE (PX)</label>
+                    <input type="number" id="user-writer-size" placeholder="Default Template Size" style="width: 100%; padding: 10px; background: #222; color: #fff; border: 1px solid #555; border-radius: 4px; font-weight: bold;">
+                </div>
+
+                <div class="input-group">
+                    <label>TEXT COLOR / GRADIENT TOP</label>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="color" id="user-color-1" style="flex-grow: 1; height: 38px; padding: 0; cursor: pointer;">
+                        <button type="button" id="reset-color-1" style="padding: 0 15px;">RESET</button>
+                    </div>
+                </div>
+
+                <div id="color-2-group" class="input-group" style="display: none;">
+                    <label>GRADIENT BOTTOM</label>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="color" id="user-color-2" style="flex-grow: 1; height: 38px; padding: 0; cursor: pointer;">
+                        <button type="button" id="reset-color-2" style="padding: 0 15px;">RESET</button>
+                    </div>
+                </div>
+
+                <div id="voyager-font-group" class="input-group" style="display: none;">
+                    <label>VOYAGER FONT STYLE</label>
+                    <select id="user-voy-font">
+                        <option value="default" selected>Template Default</option>
+                        <option value="VOY-Font">Standard (VOY-Font)</option>
+                        <option value="Galaxy-Font">Overview (Galaxy-Font)</option>
+                    </select>
+                </div>
+				
+				<div id="tos-font-group" class="input-group" style="display:none;">
+                    <label for="user-tos-font">Font Style:</label>
+                    <select id="user-tos-font">
+                        <option value="default">TOS Classic (Font 1)</option>
+                        <option value="TOS_Title2">Generic Block (Font 2)</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label style="display: block; font-size: 13px; font-weight: bold; margin-bottom: 5px;">TEXT FORMATTING</label>
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                        <input type="checkbox" id="user-word-wrap" checked style="width: 16px; height: 16px; cursor: pointer;">
+                        <span style="font-size: 13px; font-weight: bold;">AUTO WORD WRAP</span>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <input type="checkbox" id="user-retro-filter" style="width: 16px; height: 16px; cursor: pointer;">
+                        <span style="font-size: 13px; font-weight: bold;">BROADCAST FILTER (BLUR)</span>
+                    </div>
+                </div>
+
+                <div class="button-row" style="display: flex; flex-direction: column; gap: 10px;">
+                    <button class="btn-download" onclick="downloadImage()">DOWNLOAD IMAGE</button>
+                    <button type="button" onclick="goBack()" style="width: 100%; padding: 12px; background: #333; color: #fff; border: 1px solid #555; border-radius: 4px; font-weight: bold; cursor: pointer;">SWITCH SERIES</button>
+                </div>
+            </div>
+
+            <canvas id="titleCanvas"></canvas>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
