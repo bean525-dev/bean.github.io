@@ -55,6 +55,14 @@ const seriesData = {
             { name: "Overhead", bg: "ENT_andorian.png", font: "ENT-Font", top: "#f9f9f9", bottom: "#7d7d7d", size: 60, x: 0.08, y: 0.12 },
             { name: "Side View", bg: "ENT_proving.png", font: "ENT-Font", top: "#f9f9f9", bottom: "#7d7d7d", size: 60, x: 0.08, y: 0.08 },
             { name: "Battle Damage", bg: "ENT_stormfront.png", font: "ENT-Font", top: "#f9f9f9", bottom: "#7d7d7d", size: 50, x: 0.06, y: 0.08 }
+        ]		
+    },
+    "DIS": {
+        aspectRatio: "16:9",
+        templates: [            
+            { name: "Discovery Titles", bg: "DIS_titles.png", font: "DIS-Font", top: "#0f0b0e", bottom: "#0f0b0e", size: 65, x: 0.08, y: 0.7 },
+            { name: "Past Is Prologue", bg: "DIS_pastpro.png", font: "DIS-Font", top: "#0f0b0e", bottom: "#0f0b0e", size: 65, x: 0.08, y: 0.08 },
+            { name: "Will You Take My Hand", bg: "DIS_takehand.png", font: "DIS-Font", top: "#f9f9f9", bottom: "#7d7d7d", size: 65, x: 0.06, y: 0.08 }
         ]
     },
     "LD": {
@@ -198,6 +206,7 @@ function openEditor(fullName, code) {
     else if (code === "DS9") titleBox.value = "In the Pale Moonlight";
     else if (code === "VOY") titleBox.value = "Threshold";
     else if (code === "ENT") titleBox.value = "The Andorian Incident";
+	else if (code === "DIS") titleBox.value = "What's Past Is Prologue";
     else if (code === "LD") titleBox.value = "Second Contact";
     else titleBox.value = "EPISODE TITLE";
 
@@ -336,6 +345,9 @@ async function generateCard() {
         } else if (currentSeries === "TAS") {
             const maxW = currentWidth * 0.88;
             drawTAS(title, writerInput, styleObject, activeSize, maxW);
+		} else if (currentSeries === "DIS") {
+            const maxW = currentWidth * 0.92;
+            drawDiscovery(title, styleObject, activeSize, maxW, s.lineHeightFactor || 0.65);	
         } else {
             const maxW = currentWidth * 0.92;
             drawStandard(title, styleObject, activeSize, maxW);
@@ -544,6 +556,30 @@ function drawTAS(text, writer, s, size, maxW) {
         
         ctx.fillText(`WRITTEN BY ${writer.toUpperCase()}`, creditX, creditY);
     }
+}
+
+function drawDiscovery(text, s, size, maxW, lineHeightFactor) {
+    const curX = canvas.width * s.x;
+    const rawLines = processLayoutLines(text, curX, maxW);
+    const lines = formatQuotesForLines(rawLines);
+    
+    let curY = canvas.height * s.y;   
+    const stepY = size * lineHeightFactor;    
+    clearShadowSettings();
+    
+    lines.forEach(line => {
+        if (s.bottom) {
+            let grad = ctx.createLinearGradient(curX, curY, curX, curY + size);
+            grad.addColorStop(0, s.top);
+            grad.addColorStop(1, s.bottom);
+            ctx.fillStyle = grad;
+        } else {
+            ctx.fillStyle = s.color;
+        }
+        
+        ctx.fillText(line, curX, curY);
+        curY += stepY;
+    });
 }
 
 function drawStandard(text, s, size, maxW) {
