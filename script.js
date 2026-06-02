@@ -65,6 +65,28 @@ const seriesData = {
             { name: "Will You Take My Hand", bg: "DIS_takehand.png", font: "DIS-Font", top: "#f9f9f9", bottom: "#7d7d7d", size: 65, x: 0.06, y: 0.08 }
         ]
     },
+    /*
+	"ST": {
+        aspectRatio: "16:9",
+        templates: [
+            { name: "Calypso", bg: "ST_calypso_bg.png", texture: "ST_calypso_txt.png", font: "ST-Font", size: 300, style: "masked" },
+            { name: "Ephraim and Dot", bg: "ST_ephraim_bg.jpg", font: "ST-Font", color: "#a62424", size: 65, style: "shadow-stroke" },
+            { name: "The Escape Artist", bg: "ST_escape_bg.jpg", font: "ST-Font", color: "#e85527", size: 65, style: "echo" },
+            { name: "Runaway", bg: "ST_runaway_bg.jpg", texture: "ST_runaway_txt.png", font: "ST-Font", size: 70, style: "masked" },
+            { name: "Children of Mars / Ask Not", bg: "ST_stars_bg.jpg", texture: "ST_stars_txt.png", font: "ST-Font", size: 70, style: "masked-glow" }
+        ]
+    },
+	*/
+    "PRO": {
+        aspectRatio: "2.39:1",
+        templates: [
+            { name: "Nebula", bg: "PRO_titles.png", font: "PRO-Font", top: "#ffffff", bottom: "#ffffff", size: 70, showCredit: true, creditSize: 50, centerText: true },
+			{ name: "Protostar", bg: "PRO_protostar.png", font: "PRO-Font", top: "#ffffff", bottom: "#ffffff", size: 82, x: 0.08, y: 0.12 } ,
+			{ name: "Protostar 2", bg: "PRO_protostar2.png", font: "PRO-Font", top: "#ffffff", bottom: "#ffffff", size: 82, x: 0.08, y: 0.12 } ,
+			{ name: "Voyager-A/Protostar", bg: "PRO_provoya.png", font: "PRO-Font", top: "#ffffff", bottom: "#ffffff", size: 82, x: 0.08, y: 0.12 } ,
+			{ name: "Voyager-A Solo", bg: "PRO_voyager_a.png", font: "PRO-Font", top: "#ffffff", bottom: "#ffffff", size: 82, x: 0.08, y: 0.12 }
+        ]
+    },
     "LD": {
         aspectRatio: "16:9",
         templates: [            
@@ -133,6 +155,7 @@ function syncColorPickers() {
     if (!currentSeries) return;
     const tempIndex = document.getElementById('template-select').value || 0;
     const s = seriesData[currentSeries].templates[tempIndex];
+    if (!s) return;
     
     const color1Input = document.getElementById('user-color-1');
     const color2Input = document.getElementById('user-color-2');
@@ -200,6 +223,8 @@ function openEditor(fullName, code) {
     };
 
     const titleBox = document.getElementById('user-title');
+    const writerBox = document.getElementById('user-writer');
+    
     if (code === "TOS") titleBox.value = "THE CITY ON\nTHE EDGE OF FOREVER";
     else if (code === "TAS") titleBox.value = "THE VOID\nOF THE\nGALACTIC\nRIM";
     else if (code === "TNG") titleBox.value = "The Measure of a Man";
@@ -207,8 +232,15 @@ function openEditor(fullName, code) {
     else if (code === "VOY") titleBox.value = "Threshold";
     else if (code === "ENT") titleBox.value = "The Andorian Incident";
 	else if (code === "DIS") titleBox.value = "What's Past Is Prologue";
+    else if (code === "ST") titleBox.value = "Calypso";
+    else if (code === "PRO") {
+        titleBox.value = "Preludes";
+        if (writerBox) writerBox.value = "Julie Benson\nShawna Benson\nKevin & Dan Hageman\nNikhil S. Jayaram";
+    }
     else if (code === "LD") titleBox.value = "Second Contact";
     else titleBox.value = "EPISODE TITLE";
+
+    if (code !== "PRO" && writerBox) writerBox.value = "";
 
     syncColorPickers();
     setupListeners(); 
@@ -243,6 +275,7 @@ async function generateCard() {
     const writerInput = (writerElem) ? writerElem.value : "";
     const tempIndex = document.getElementById('template-select').value || 0;
     const s = seriesData[currentSeries].templates[tempIndex];
+    if (!s) return;
     
     const writerGroup = document.getElementById('writer-group');
     if (writerGroup) {
@@ -306,8 +339,12 @@ async function generateCard() {
 
     img.onload = () => {
         const ratio = seriesData[currentSeries].aspectRatio || "4:3";
-        const currentWidth = (ratio === "16:9") ? 1920 : 1440;
+        const ratioParts = ratio.split(':');
+        const ratioWidth = parseFloat(ratioParts[0]);
+        const ratioHeight = parseFloat(ratioParts[1]);
+        
         const currentHeight = BASE_HEIGHT;
+        const currentWidth = Math.round(currentHeight * (ratioWidth / ratioHeight));
 
         canvas.width = currentWidth;
         canvas.height = currentHeight;
@@ -316,7 +353,7 @@ async function generateCard() {
         
         ctx.font = `${activeSize}px "${activeFont}", Arial, sans-serif`;
         ctx.textBaseline = "top";
-        ctx.textAlign = "left";
+        ctx.textAlign = "left"
 
         const styleObject = {
             size: activeSize,
@@ -329,7 +366,9 @@ async function generateCard() {
             spacing: s.spacing,
             creditSize: activeWriterSize,
             centerText: s.centerText || false,
-            writerSpacing: s.writerSpacing || 40
+            writerSpacing: s.writerSpacing || 40,
+            style: s.style,
+            texture: s.texture
         };
 
         const filterCheck = document.getElementById('user-retro-filter');
@@ -339,17 +378,19 @@ async function generateCard() {
             ctx.filter = 'none';
         }
 
+        const maxW = currentWidth * 0.92;
+
         if (currentSeries === "TOS") {
-            const maxW = currentWidth * 0.92;
             drawTOS(title, writerInput, styleObject, activeSize, maxW);
         } else if (currentSeries === "TAS") {
-            const maxW = currentWidth * 0.88;
             drawTAS(title, writerInput, styleObject, activeSize, maxW);
 		} else if (currentSeries === "DIS") {
-            const maxW = currentWidth * 0.92;
             drawDiscovery(title, styleObject, activeSize, maxW, s.lineHeightFactor || 0.65);	
+        } else if (currentSeries === "ST") {
+            drawShortTreks(title, styleObject, activeSize, maxW);
+        } else if (currentSeries === "PRO" && s.centerText) {
+            drawProdigy(title, writerInput, styleObject, activeSize, maxW);
         } else {
-            const maxW = currentWidth * 0.92;
             drawStandard(title, styleObject, activeSize, maxW);
         }
         
@@ -580,6 +621,147 @@ function drawDiscovery(text, s, size, maxW, lineHeightFactor) {
         ctx.fillText(line, curX, curY);
         curY += stepY;
     });
+}
+
+function drawShortTreks(text, s, size, maxW) {
+    const curX = canvas.width / 2;
+    const rawLines = processLayoutLines(text, canvas.width * 0.05, maxW);
+    const lines = rawLines;
+    
+    const lineHeight = size * 1.1;
+    const totalTextHeight = lines.length * lineHeight;
+    let curY = (canvas.height - totalTextHeight) / 2 - 20;
+
+    ctx.textAlign = "center";
+    ctx.textBaseline = "top";
+
+    if (s.style === "shadow-stroke") {
+        ctx.font = `${size}px "${s.font}", Arial, sans-serif`;
+        lines.forEach(line => {
+            ctx.fillStyle = "#ffffff";
+            ctx.fillText(line, curX + 6, curY + 6);
+            ctx.fillStyle = s.color;
+            ctx.fillText(line, curX, curY);
+            curY += lineHeight;
+        });
+    } else if (s.style === "echo") {
+        ctx.font = `${size}px "${s.font}", Arial, sans-serif`;
+        lines.forEach(line => {
+            ctx.save();
+            ctx.globalAlpha = 0.25;
+            ctx.filter = "blur(4px)";
+            ctx.fillStyle = s.color;
+            ctx.fillText(line, curX - 15, curY - 5);
+            ctx.fillText(line, curX + 15, curY + 5);
+            ctx.restore();
+
+            ctx.fillStyle = s.color;
+            ctx.fillText(line, curX, curY);
+            curY += lineHeight;
+        });
+    } else if (s.style === "masked" || s.style === "masked-glow") {
+        const offCanvas = document.createElement('canvas');
+        offCanvas.width = canvas.width;
+        offCanvas.height = canvas.height;
+        const octx = offCanvas.getContext('2d');
+
+        octx.font = `${size}px "${s.font}", Arial, sans-serif`;
+        octx.textAlign = "center";
+        octx.textBaseline = "top";
+        octx.fillStyle = "#ffffff";
+
+        let textY = curY;
+        lines.forEach(line => {
+            octx.fillText(line, curX, textY);
+            textY += lineHeight;
+        });
+
+        if (s.texture) {
+            const texImg = new Image();
+            texImg.src = `images/${s.texture}`;
+            texImg.onload = () => {
+                octx.save();
+                octx.globalCompositeOperation = "source-in";
+                octx.drawImage(texImg, 0, 0, canvas.width, canvas.height);
+                octx.restore();
+
+                if (s.style === "masked-glow") {
+                    ctx.save();
+                    ctx.filter = "blur(12px)";
+                    ctx.globalAlpha = 0.6;
+                    ctx.drawImage(offCanvas, 0, 0);
+                    ctx.restore();
+                }
+                ctx.drawImage(offCanvas, 0, 0);
+            };
+            if (texImg.complete) texImg.onload();
+        }
+    }
+}
+
+function drawProdigy(text, writer, s, size, maxW) {
+    const curX = canvas.width / 2;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "top";
+    ctx.font = `${size}px "${s.font}", Arial, sans-serif`;
+
+    const colorTop = document.getElementById("user-color-1").value || s.top || "#ffffff";
+    const colorBottom = document.getElementById("user-color-2").value || s.bottom || "#ffffff";
+
+    const titleLines = formatQuotesForLines(processLayoutLines(text, canvas.width * 0.05, maxW));
+    const titleLineHeight = size * 1.3;
+    
+    let writers = [];
+    if (writer && writer.trim() !== "") {
+        writers = writer.split(/[\n,]+/).map(w => w.trim()).filter(w => w !== "");
+    }
+
+    const creditFontSize = s.creditSize;
+    const creditLineHeight = creditFontSize * 1.25;
+    const labelFontSize = Math.round(creditFontSize * 0.68);
+
+    let totalBlockHeight = titleLines.length * titleLineHeight;
+    if (writers.length > 0) {
+        totalBlockHeight += 35 + labelFontSize + 12 + (writers.length * creditLineHeight);
+    }
+
+    let curY = (canvas.height - totalBlockHeight) / 2;
+    if (curY < 60) curY = 60; 
+
+    titleLines.forEach(line => {
+        let titleGradient = ctx.createLinearGradient(0, curY, 0, curY + size);
+        titleGradient.addColorStop(0, colorTop);
+        titleGradient.addColorStop(1, colorBottom);
+
+        ctx.fillStyle = titleGradient;
+        ctx.fillText(line, curX, curY);
+        curY += titleLineHeight;
+    });
+
+    if (writers.length > 0) {
+        curY += 35; 
+        ctx.font = `${labelFontSize}px "${s.font}", Arial, sans-serif`;
+        
+        let labelGradient = ctx.createLinearGradient(0, curY, 0, curY + labelFontSize);
+        labelGradient.addColorStop(0, colorTop);
+        labelGradient.addColorStop(1, colorBottom);
+        
+        ctx.fillStyle = labelGradient;
+        ctx.fillText("WRITTEN BY", curX, curY);
+        curY += labelFontSize + 12;
+
+        ctx.font = `${creditFontSize}px "${s.font}", Arial, sans-serif`;
+        
+        writers.forEach(name => {
+            let writerGradient = ctx.createLinearGradient(0, curY, 0, curY + creditFontSize);
+            writerGradient.addColorStop(0, colorTop);
+            writerGradient.addColorStop(1, colorBottom);
+
+            ctx.fillStyle = writerGradient;
+            ctx.fillText(name.toUpperCase(), curX, curY);
+            curY += creditLineHeight;
+        });
+    }
 }
 
 function drawStandard(text, s, size, maxW) {

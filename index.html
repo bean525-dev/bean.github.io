@@ -22,7 +22,7 @@
 </head>
 <body>
 
-        <div style="font-family: 'Galaxy-Font'; position: absolute; visibility: hidden; height: 0; width: 0; pointer-events: none;">Preload</div>
+    <div style="font-family: 'Galaxy-Font'; position: absolute; visibility: hidden; height: 0; width: 0; pointer-events: none;">Preload</div>
 
     <div id="picker-screen" class="container">
         <h1>Select a Series</h1>
@@ -55,6 +55,16 @@
                 <div class="img-container"><img src="images/dis.png" alt="DIS"></div>
                 <div class="show-name">DISCOVERY</div>
             </div>
+            <!--
+			<div class="show-card" onclick="openEditor('Short Treks', 'ST')">
+                <div class="img-container"><img src="images/st.png" alt="ST"></div>
+                <div class="show-name">SHORT TREKS</div>
+            </div>
+			-->
+            <div class="show-card" onclick="openEditor('Star Trek: Prodigy', 'PRO')">
+                <div class="img-container"><img src="images/pro.png" alt="PRO"></div>
+                <div class="show-name">PRODIGY</div>
+            </div>
 			<div class="show-card" onclick="openEditor('Lower Decks', 'LD')">
                 <div class="img-container"><img src="images/ld.jpg" alt="LD"></div>
                 <div class="show-name">LOWER DECKS</div>
@@ -78,7 +88,7 @@
 
                 <div id="writer-group" class="input-group" style="display:none;">
                     <label>WRITTEN BY</label>
-                    <input type="text" id="user-writer" placeholder="Author Name">
+                    <textarea id="user-writer" rows="3" placeholder="Author Name(s)&#10;For multiple, use commas or one per line"></textarea>
                 </div>
 
                 <div class="input-group">
@@ -154,12 +164,11 @@
         </div>
     </div>
 	
-	    <footer style="padding: 20px 10px; margin-top: 40px; text-align: center; font-family: sans-serif; font-size: 11px; line-height: 1.6; color: #888; border-top: 1px solid #222;">
+    <footer style="padding: 20px 10px; margin-top: 40px; text-align: center; font-family: sans-serif; font-size: 11px; line-height: 1.6; color: #888; border-top: 1px solid #222;">
         <p style="max-width: 800px; margin: 0 auto;">
             <strong>Disclaimer:</strong> Star Trek and all related marks, logos, characters, and indicia are solely owned by CBS Studios and Paramount Pictures. This is an open-source, non-commercial fan project built strictly for parody, educational, and recreational use. It is completely unaffiliated with, or endorsed by the franchise owners.
         </p>
     </footer>
-
 
     <script src="script.js"></script>
 </body>
