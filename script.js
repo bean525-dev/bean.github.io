@@ -695,7 +695,7 @@ function drawShortTreks(text, s, size, maxW) {
     
     const lineHeight = size * 1.1;
     const totalTextHeight = lines.length * lineHeight;
-    let curY = (canvas.height - totalTextHeight) / 2 - 40;
+    let curY = (canvas.height - totalTextHeight) / 2;
 
     ctx.textAlign = "center";
     ctx.textBaseline = "top";
@@ -749,7 +749,7 @@ function drawShortTreks(text, s, size, maxW) {
         octx.textBaseline = "top";
         octx.fillStyle = "#ffffff";
 
-        let textY = curY; -20
+        let textY = curY; 
         lines.forEach(line => {
             octx.fillText(line, curX, textY);
             textY += lineHeight;
@@ -780,7 +780,7 @@ function drawShortTreks(text, s, size, maxW) {
                     ctx.textBaseline = "top";
                     ctx.textAlign = "center";
                     
-                    let strokeY = curY; - 20
+                    let strokeY = curY;
                     lines.forEach(line => {
                         ctx.save();                        
                         
