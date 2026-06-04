@@ -749,7 +749,7 @@ function drawShortTreks(text, s, size, maxW) {
         octx.textBaseline = "top";
         octx.fillStyle = "#ffffff";
 
-        let textY = curY;
+        let textY = curY; -20
         lines.forEach(line => {
             octx.fillText(line, curX, textY);
             textY += lineHeight;
@@ -780,7 +780,7 @@ function drawShortTreks(text, s, size, maxW) {
                     ctx.textBaseline = "top";
                     ctx.textAlign = "center";
                     
-                    let strokeY = curY;
+                    let strokeY = curY; - 20
                     lines.forEach(line => {
                         ctx.save();                        
                         
@@ -837,7 +837,7 @@ function drawShortTreks(text, s, size, maxW) {
     } else if (s.style === "masked-cosmic") {
         if (isTyping) {
             ctx.font = `${size}px "${s.font}", Arial, sans-serif`;
-            ctx.fillStyle = "#ffffff";
+            ctx.fillStyle = "#b0afab";
             let fallbackY = curY;
             lines.forEach(line => {
                 ctx.fillText(line, curX, fallbackY);
@@ -854,7 +854,7 @@ function drawShortTreks(text, s, size, maxW) {
         octx.font = `${size}px "${s.font}", Arial, sans-serif`;
         octx.textAlign = "center";
         octx.textBaseline = "top";
-        octx.fillStyle = "#ffffff";
+        octx.fillStyle = "#b0afab";
 
         let textY = curY;
         lines.forEach(line => {
