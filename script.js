@@ -4,6 +4,10 @@ let currentSeries = "";
 
 const BASE_HEIGHT = 1080;
 
+const textureCache = {};
+let debounceTimer = null;
+let isTyping = false;
+
 const seriesData = {
     "TOS": {
         aspectRatio: "4:3",
@@ -38,7 +42,7 @@ const seriesData = {
             { name: "Defiant", bg: "DS9_favor.png", font: "DS9-Font", top: "#e0e0e0", bottom: "#7da6ff", size: 86, x: 0.1, y: 0.12 },			
             { name: "Station View 2", bg: "DS9_adversary.png", font: "DS9-Font", top: "#e0e0e0", bottom: "#7da6ff", size: 86, x: 0.1, y: 0.12 },
 			{ name: "Runabout", bg: "DS9_runabout.png", font: "DS9-Font", top: "#e0e0e0", bottom: "#7da6ff", size: 86, x: 0.1, y: 0.12 },
-            { name: "Station View 3", bg: "DS9_shakaar.png", font: "DS9-Font", top: "#e0e0e0", bottom: "#7da6ff", size: 86, x: 0.12, y: 0.10 }
+            { name: "Station View 3", bg: "DS9_shakaar.png", font: "DS9-Font", top: "#e0e0e0", bottom: "#7da6ff", size: 82, x: 0.12, y: 0.10 }
         ]
     },
     "VOY": {
@@ -64,19 +68,17 @@ const seriesData = {
             { name: "Past Is Prologue", bg: "DIS_pastpro.png", font: "DIS-Font", top: "#0f0b0e", bottom: "#0f0b0e", size: 65, x: 0.08, y: 0.08 },
             { name: "Will You Take My Hand", bg: "DIS_takehand.png", font: "DIS-Font", top: "#f9f9f9", bottom: "#7d7d7d", size: 65, x: 0.06, y: 0.08 }
         ]
-    },
-    /*
+    },    
 	"ST": {
-        aspectRatio: "16:9",
+        aspectRatio: "2.39:1",
         templates: [
-            { name: "Calypso", bg: "ST_calypso_bg.png", texture: "ST_calypso_txt.png", font: "ST-Font", size: 300, style: "masked" },
-            { name: "Ephraim and Dot", bg: "ST_ephraim_bg.jpg", font: "ST-Font", color: "#a62424", size: 65, style: "shadow-stroke" },
-            { name: "The Escape Artist", bg: "ST_escape_bg.jpg", font: "ST-Font", color: "#e85527", size: 65, style: "echo" },
-            { name: "Runaway", bg: "ST_runaway_bg.jpg", texture: "ST_runaway_txt.png", font: "ST-Font", size: 70, style: "masked" },
-            { name: "Children of Mars / Ask Not", bg: "ST_stars_bg.jpg", texture: "ST_stars_txt.png", font: "ST-Font", size: 70, style: "masked-glow" }
+            { name: "Calypso", bg: "ST_calypso_bg.png", texture: "ST_calypso_txt.png", font: "ST-Font", size: 380, style: "masked" },
+            { name: "Ephraim and Dot", bg: "ST_ephraim.png", font: "ST-Font", top: "#bd1616", bottom: "#7d0003", size: 380, style: "shadow-stroke" },
+            { name: "The Escape Artist", bg: "ST_escape_bg.png", font: "ST-Font", top: "#970000", bottom: "#7d0003", size: 360, style: "echo" },
+            { name: "Runaway", bg: "ST_ephraim.png", texture: "ST_runaway_texture.png", font: "ST-Font", top: "#e03a3a", size: 360, style: "masked" },            
+			{ name: "The Girl Who Made the Stars", bg: "ST_stars_bg.png", texture: "ST_girlstars_texture2.png", font: "ST-Font", top: "#ffffff", bottom: "#ffffff", size: 360, style: "masked-cosmic", hideGradients: true }
         ]
-    },
-	*/
+    },	
     "PRO": {
         aspectRatio: "2.39:1",
         templates: [
@@ -97,14 +99,36 @@ const seriesData = {
     }
 };
 
+function handleTextInput() {
+    isTyping = true;
+    generateCard();
+
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+        isTyping = false;
+        generateCard();
+    }, 250);
+}
+
 function setupListeners() {
-    const inputs = [
-        'user-title', 'user-writer', 'template-select', 'user-font-size', 'user-writer-size',
+    const textInputs = ['user-title', 'user-writer'];
+    const standardInputs = [
+        'template-select', 'user-font-size', 'user-writer-size',
         'user-color-1', 'user-color-2', 'user-voy-font', 'user-tos-font',
         'user-word-wrap', 'user-retro-filter'
     ];
     
-    inputs.forEach(id => {
+    textInputs.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.removeEventListener('input', handleTextInput);
+            el.addEventListener('input', handleTextInput);
+            el.removeEventListener('change', generateCard);
+            el.addEventListener('change', generateCard);
+        }
+    });
+
+    standardInputs.forEach(id => {
         const el = document.getElementById(id);
         if (el) {
             el.removeEventListener('input', generateCard);
@@ -168,6 +192,48 @@ function syncColorPickers() {
     }
 }
 
+function updateControlVisibility(currentTemplate, code) {
+    const color1Input = document.getElementById('user-color-1');
+    const color2Input = document.getElementById('user-color-2');
+    
+    let color1Group = document.getElementById('color-1-group') || color1Input?.parentElement;
+    let color2Group = document.getElementById('color-2-group') || color2Input?.parentElement;
+    
+    if (color1Group && color1Group.classList.contains('control-group') === false && color1Group.parentElement?.classList.contains('control-group')) {
+        color1Group = color1Group.parentElement;
+    }
+    if (color2Group && color2Group.classList.contains('control-group') === false && color2Group.parentElement?.classList.contains('control-group')) {
+        color2Group = color2Group.parentElement;
+    }
+
+    const labels = Array.from(document.querySelectorAll('label'));
+    const color1Label = labels.find(el => {
+        const text = el.innerText.toLowerCase();
+        return text.includes('color (top)') || text.includes('gradient top') || text.includes('color 1') || text.includes('text color');
+    });
+    const color2Label = labels.find(el => {
+        const text = el.innerText.toLowerCase();
+        return text.includes('color (bottom)') || text.includes('gradient bottom') || text.includes('color 2');
+    });
+
+    const finalGroup1 = color1Label?.closest('.control-group') || color1Label?.parentElement || color1Group;
+    const finalGroup2 = color2Label?.closest('.control-group') || color2Label?.parentElement || color2Group;
+
+    if (currentTemplate.hideGradients) {
+        if (finalGroup1) finalGroup1.style.display = 'none';
+        if (finalGroup2) finalGroup2.style.display = 'none';
+        
+        if (color1Input) color1Input.value = "#ffffff";
+        if (color2Input) color2Input.value = "";
+    } else {
+        if (finalGroup1) finalGroup1.style.display = 'block';
+        if (finalGroup2) {
+            const isColor1Override = color1Input?.dataset.override === "true";
+            finalGroup2.style.display = (currentTemplate.top || isColor1Override) ? "block" : "none";
+        }
+    }
+}
+
 function openEditor(fullName, code) {
     currentSeries = code;
     document.getElementById('picker-screen').style.display = 'none';
@@ -218,6 +284,7 @@ function openEditor(fullName, code) {
         const currentTemplate = seriesData[currentSeries].templates[currentTempIndex];
         if (writerGroup) writerGroup.style.display = (currentTemplate.showCredit) ? "block" : "none";
         if (writerSizeGroup) writerSizeGroup.style.display = (currentTemplate.showCredit) ? "block" : "none";
+        updateControlVisibility(currentTemplate, currentSeries);
         syncColorPickers();
         generateCard();
     };
@@ -242,6 +309,7 @@ function openEditor(fullName, code) {
 
     if (code !== "PRO" && writerBox) writerBox.value = "";
 
+    updateControlVisibility(initialTemplate, code);
     syncColorPickers();
     setupListeners(); 
     generateCard();
@@ -256,7 +324,7 @@ function goBack() {
         history.back();
     } else {
         document.getElementById('picker-screen').style.display = 'block';
-        document.getElementById('editor-screen').style.display = 'none';
+        document.getElementById('editor-screen').style.none = 'none';
     }
 }
 
@@ -293,10 +361,7 @@ async function generateCard() {
     const isColor1Override = color1Input && color1Input.dataset.override === "true";
     const isColor2Override = color2Input && color2Input.dataset.override === "true";
 
-    const color2Group = document.getElementById('color-2-group');
-    if (color2Group) {
-        color2Group.style.display = (s.top || isColor1Override) ? "block" : "none";
-    }
+    updateControlVisibility(s, currentSeries);
 
     const userSize = document.getElementById('user-font-size').value;
     const activeSize = (userSize && userSize > 0) ? parseInt(userSize) : s.size;
@@ -630,7 +695,7 @@ function drawShortTreks(text, s, size, maxW) {
     
     const lineHeight = size * 1.1;
     const totalTextHeight = lines.length * lineHeight;
-    let curY = (canvas.height - totalTextHeight) / 2 - 20;
+    let curY = (canvas.height - totalTextHeight) / 2 + 40;
 
     ctx.textAlign = "center";
     ctx.textBaseline = "top";
@@ -639,8 +704,15 @@ function drawShortTreks(text, s, size, maxW) {
         ctx.font = `${size}px "${s.font}", Arial, sans-serif`;
         lines.forEach(line => {
             ctx.fillStyle = "#ffffff";
-            ctx.fillText(line, curX + 6, curY + 6);
-            ctx.fillStyle = s.color;
+            ctx.fillText(line, curX + 3, curY + 3);
+            if (s.bottom) {
+                let grad = ctx.createLinearGradient(curX, curY, curX, curY + size);
+                grad.addColorStop(0, s.top);
+                grad.addColorStop(1, s.bottom);
+                ctx.fillStyle = grad;
+            } else {
+                ctx.fillStyle = s.color || s.top;
+            }
             ctx.fillText(line, curX, curY);
             curY += lineHeight;
         });
@@ -648,14 +720,21 @@ function drawShortTreks(text, s, size, maxW) {
         ctx.font = `${size}px "${s.font}", Arial, sans-serif`;
         lines.forEach(line => {
             ctx.save();
-            ctx.globalAlpha = 0.25;
+            ctx.globalAlpha = 0.35;
             ctx.filter = "blur(4px)";
-            ctx.fillStyle = s.color;
-            ctx.fillText(line, curX - 15, curY - 5);
-            ctx.fillText(line, curX + 15, curY + 5);
+            ctx.fillStyle = s.top || "#d63031"; 
+            ctx.fillText(line, curX - 25, curY - 35);
             ctx.restore();
 
-            ctx.fillStyle = s.color;
+            ctx.save();
+            ctx.globalAlpha = 0.25;
+            ctx.filter = "blur(8px)";
+            ctx.fillStyle = s.bottom || "#0984e3"; 
+            ctx.fillText(line, curX + 20, curY + 45);
+            ctx.restore();
+
+            ctx.filter = "none";
+            ctx.fillStyle = s.top || s.color;
             ctx.fillText(line, curX, curY);
             curY += lineHeight;
         });
@@ -678,6 +757,7 @@ function drawShortTreks(text, s, size, maxW) {
 
         if (s.texture) {
             const texImg = new Image();
+            texImg.crossOrigin = "anonymous";
             texImg.src = `images/${s.texture}`;
             texImg.onload = () => {
                 octx.save();
@@ -693,8 +773,260 @@ function drawShortTreks(text, s, size, maxW) {
                     ctx.restore();
                 }
                 ctx.drawImage(offCanvas, 0, 0);
+
+                if (s.top) {
+                    ctx.save();
+                    ctx.font = `${size}px "${s.font}", Arial, sans-serif`;
+                    ctx.textBaseline = "top";
+                    ctx.textAlign = "center";
+                    
+                    let strokeY = curY;
+                    lines.forEach(line => {
+                        ctx.save();                        
+                        
+                        if (s.bottom) {
+                            ctx.shadowBlur = 6;
+                            ctx.shadowColor = s.bottom;
+                        }
+                        
+                        ctx.strokeStyle = s.top;
+                        ctx.lineWidth = 1;
+                        ctx.globalAlpha = 0.4;
+                        ctx.strokeText(line, curX, strokeY);
+                        ctx.restore(); 
+
+                        ctx.save();
+                        ctx.strokeStyle = s.top;
+                        ctx.lineWidth = 1;
+                        ctx.globalAlpha = 0.15;
+                        
+                        ctx.strokeText(line, curX - 15, strokeY);
+                        ctx.strokeText(line, curX + 15, strokeY);
+                        ctx.strokeText(line, curX, strokeY - 8);
+                        ctx.strokeText(line, curX, strokeY + 8);
+                        
+                        let hash = 0;
+                        for (let i = 0; i < line.length; i++) {
+                            hash = line.charCodeAt(i) + ((hash << 5) - hash);
+                        }
+                        const getSeededValue = (seedMod, min, max) => {
+                            const val = Math.abs(Math.sin(hash + seedMod));
+                            return min + val * (max - min);
+                        };
+
+                        ctx.font = `${size * 0.06}px sans-serif`;
+                        ctx.fillStyle = s.top;
+                        ctx.globalAlpha = 0.5;
+                        
+                        const totalMetrics = ctx.measureText(line);
+                        const leftEdge = curX - (totalMetrics.width / 2);
+                        const rightEdge = curX + (totalMetrics.width / 2);
+                        
+                        ctx.fillText(getSeededValue(1, 10, 99).toFixed(1), leftEdge - 20, strokeY + (size * 0.2));
+                        ctx.fillText("FIG.0" + Math.floor(getSeededValue(2, 1, 9)), rightEdge + 5, strokeY + (size * 0.1));
+                        ctx.fillText(Math.floor(getSeededValue(3, 100, 999)).toString(), rightEdge - 40, strokeY + (size * 0.75));
+
+                        ctx.restore();
+                        strokeY += lineHeight;
+                    });
+                    ctx.restore();
+                }
             };
             if (texImg.complete) texImg.onload();
+        }
+    } else if (s.style === "masked-cosmic") {
+        if (isTyping) {
+            ctx.font = `${size}px "${s.font}", Arial, sans-serif`;
+            ctx.fillStyle = "#ffffff";
+            let fallbackY = curY;
+            lines.forEach(line => {
+                ctx.fillText(line, curX, fallbackY);
+                fallbackY += lineHeight;
+            });
+            return;
+        }
+
+        const offCanvas = document.createElement('canvas');
+        offCanvas.width = canvas.width;
+        offCanvas.height = canvas.height;
+        const octx = offCanvas.getContext('2d');
+
+        octx.font = `${size}px "${s.font}", Arial, sans-serif`;
+        octx.textAlign = "center";
+        octx.textBaseline = "top";
+        octx.fillStyle = "#ffffff";
+
+        let textY = curY;
+        lines.forEach(line => {
+            octx.fillText(line, curX, textY);
+            textY += lineHeight;
+        });
+
+        if (s.texture) {
+            const runScanner = (loadedImg) => {
+                octx.save();
+                octx.globalCompositeOperation = "source-in";
+                octx.filter = "brightness(1.8) contrast(1.5)";
+                
+                const pattern = octx.createPattern(loadedImg, 'repeat');
+                octx.fillStyle = pattern;
+                octx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                octx.filter = "none";
+                octx.restore();
+
+                const edgeCanvas = document.createElement('canvas');
+                edgeCanvas.width = canvas.width;
+                edgeCanvas.height = canvas.height;
+                const ectx = edgeCanvas.getContext('2d');
+
+                ectx.font = `${size}px "${s.font}", Arial, sans-serif`;
+                ectx.textAlign = "center";
+                ectx.textBaseline = "top";
+                ectx.strokeStyle = "#ffffff";
+                ectx.lineWidth = 4;
+
+                let edgeY = curY;
+                lines.forEach(line => {
+                    ectx.strokeText(line, curX, edgeY);
+                    edgeY += lineHeight;
+                });
+
+                const edgeImgData = ectx.getImageData(0, 0, canvas.width, canvas.height);
+                const edgePixels = edgeImgData.data;
+
+                const textImgData = octx.getImageData(0, 0, canvas.width, canvas.height);
+                const textPixels = textImgData.data;
+                
+                const normalEdgePoints = [];
+                const wordEndEdgePoints = [];
+
+                let currentWordY = curY;
+                lines.forEach(line => {
+                    const words = line.split(' ');
+                    let accumulatedText = "";
+
+                    ctx.font = `${size}px "${s.font}", Arial, sans-serif`;
+                    ctx.textAlign = "center";
+                    ctx.textBaseline = "top";
+
+                    words.forEach((word, index) => {
+                        if (!word) return;
+                        
+                        const priorMetrics = ctx.measureText(accumulatedText);
+                        const wordMetrics = ctx.measureText(word);
+                        const totalLineMetrics = ctx.measureText(line);
+                        
+                        const lineLeftEdge = curX - (totalLineMetrics.width / 2);
+                        const wordLeft = lineLeftEdge + priorMetrics.width;
+                        const wordRight = wordLeft + wordMetrics.width;
+
+                        const scanPaddingX = 40; 
+                        const startX = Math.floor(wordRight - scanPaddingX);
+                        const endX = Math.ceil(wordRight + scanPaddingX);
+                        
+                        const startY = Math.floor(currentWordY - (size * 0.50));
+                        const endY = Math.ceil(currentWordY + size + (size * 0.50));
+
+                        for (let y = startY; y < endY; y += 2) {
+                            if (y >= canvas.height || y < 0) continue;
+                            
+                            for (let x = endX; x >= startX; x -= 2) {
+                                if (x >= canvas.width || x < 0) continue;
+
+                                const alphaIndex = ((y * canvas.width) + x) * 4 + 3;
+                                const nextAlphaIndex = ((y * canvas.width) + (x + 2)) * 4 + 3;
+
+                                if (edgePixels[alphaIndex] > 100 && edgePixels[nextAlphaIndex] < 150) {
+                                    wordEndEdgePoints.push({ x, y });
+                                    break; 
+                                }
+                            }
+                        }
+
+                        accumulatedText += word + " ";
+                    });
+                    currentWordY += lineHeight;
+                });
+
+                for (let y = 0; y < canvas.height; y += 2) {
+                    for (let x = 0; x < canvas.width - 2; x += 2) {
+                        const alphaIndex = ((y * canvas.width) + x) * 4 + 3;
+                        const nextAlphaIndex = ((y * canvas.width) + (x + 2)) * 4 + 3;
+
+                        if (edgePixels[alphaIndex] > 100 && edgePixels[nextAlphaIndex] < 150) {
+                            const isWordEnd = wordEndEdgePoints.some(p => Math.abs(p.x - x) <= 2 && p.y === y);
+                            if (!isWordEnd) {
+                                normalEdgePoints.push({ x, y });
+                            }
+                        }
+                    }
+                }
+
+                ctx.drawImage(offCanvas, 0, 0);
+
+                ctx.save();
+                ctx.globalCompositeOperation = "screen";
+
+                const spawnTrail = (pointsArray, particleRatio, maxLength) => {
+                    const spawnCount = pointsArray.length * particleRatio;
+                    for (let i = 0; i < spawnCount; i++) {
+                        const basePoint = pointsArray[Math.floor(Math.random() * pointsArray.length)];
+                        const progress = Math.random();
+
+                        const driftX = progress * maxLength * (0.4 + Math.random() * 0.6);
+                        const driftY = ((Math.random() - 0.5) * 16 * progress) - (progress * 4);
+
+                        const finalX = basePoint.x + driftX;
+                        const finalY = basePoint.y + driftY;
+
+                        const alpha = (1.0 - progress) * (0.15 + Math.random() * 0.5);
+                        
+                        const lookupX = Math.min(canvas.width - 1, Math.max(0, Math.floor(basePoint.x)));
+                        const lookupY = Math.min(canvas.height - 1, Math.max(0, Math.floor(basePoint.y)));
+                        const pixelPos = ((lookupY * canvas.width) + lookupX) * 4;
+                        
+                        let r = textPixels[pixelPos];
+                        let g = textPixels[pixelPos + 1];
+                        let b = textPixels[pixelPos + 2];
+                        let textAlpha = textPixels[pixelPos + 3];
+
+                        if (textAlpha < 30) {
+                            r = 255; g = 255; b = 255;
+                        }
+
+                        ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
+
+                        const particleSize = Math.random() * 1.8 + 0.4;
+
+                        ctx.beginPath();
+                        ctx.arc(finalX, finalY, particleSize, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                };
+
+                if (normalEdgePoints.length > 0) {
+                    spawnTrail(normalEdgePoints, 0.6, 35);
+                }
+
+                if (wordEndEdgePoints.length > 0) {
+                    spawnTrail(wordEndEdgePoints, 4.5, 75);
+                }
+
+                ctx.restore();
+            };
+
+            if (textureCache[s.texture]) {
+                runScanner(textureCache[s.texture]);
+            } else {
+                const texImg = new Image();
+                texImg.crossOrigin = "anonymous";
+                texImg.src = `images/${s.texture}`;
+                texImg.onload = () => {
+                    textureCache[s.texture] = texImg;
+                    runScanner(texImg);
+                };
+            }
         }
     }
 }
