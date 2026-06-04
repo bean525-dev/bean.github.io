@@ -695,7 +695,7 @@ function drawShortTreks(text, s, size, maxW) {
     
     const lineHeight = size * 1.1;
     const totalTextHeight = lines.length * lineHeight;
-    let curY = (canvas.height - totalTextHeight) / 2 + 40;
+    let curY = (canvas.height - totalTextHeight) / 2 - 40;
 
     ctx.textAlign = "center";
     ctx.textBaseline = "top";
