@@ -24,7 +24,7 @@ const seriesData = {
     "TAS": {
         aspectRatio: "4:3",
         templates: [
-            { name: "Planet", bg: "TAS_bg.png", font: "TAS-Font", color: "#dcb442", size: 210, x: 0.12, y: 0.12, creditSize: 60, showCredit: true }
+		{ name: "Planet", bg: "TAS_bg.png", font: "TAS-Font", color: "#dcb442", size: 210, x: 0.12, y: 0.10, creditSize: 60, showCredit: true, spacing: 0.88 }
         ]
     },
     "TNG": {
@@ -622,12 +622,15 @@ function drawTOS(text, writer, s, size, maxW) {
     }
 }
 
-function drawTAS(text, writer, s, size, maxW) {
-    const curX = canvas.width * s.x;
-    const lines = processLayoutLines(text, curX, maxW);
+function drawTAS(text, writer, s, size, maxW) {    
+    let processedText = text
+        .replace(/r/gi, '\u00AE');
+
+    const curX = canvas.width * s.x;    
+    const lines = processLayoutLines(processedText, curX, maxW); 
     
     let curY = canvas.height * s.y;
-    const lineHeight = size * 0.8; 
+    const lineHeight = size * (s.spacing || 0.88); 
     
     clearShadowSettings();
     
@@ -646,6 +649,8 @@ function drawTAS(text, writer, s, size, maxW) {
     });
     
     if (writer && writer.trim() !== "") {
+		let creditText = `WRITTEN BY ${writer.toUpperCase()}`
+            .replace(/r/gi, '\u00AE');
         ctx.font = `${s.creditSize}px "${s.font}", Arial, sans-serif`;
         ctx.textAlign = "center";
         
@@ -660,7 +665,7 @@ function drawTAS(text, writer, s, size, maxW) {
             ctx.fillStyle = s.color;
         }
         
-        ctx.fillText(`WRITTEN BY ${writer.toUpperCase()}`, creditX, creditY);
+        ctx.fillText(creditText, creditX, creditY);
     }
 }
 
