@@ -623,14 +623,13 @@ function drawTOS(text, writer, s, size, maxW) {
 }
 
 function drawTAS(text, writer, s, size, maxW) {    
-    let processedText = text
-        .replace(/r/gi, '\u00AE');
+    let processedText = text.replace(/r/gi, String.fromCodePoint(174));
 
-    const curX = canvas.width * s.x;    
+    const curX = canvas.width * s.x;
     const lines = processLayoutLines(processedText, curX, maxW); 
     
     let curY = canvas.height * s.y;
-    const lineHeight = size * (s.spacing || 0.88); 
+    const lineHeight = size * (s.spacing || 0.92); 
     
     clearShadowSettings();
     
@@ -649,8 +648,9 @@ function drawTAS(text, writer, s, size, maxW) {
     });
     
     if (writer && writer.trim() !== "") {
-		let creditText = `WRITTEN BY ${writer.toUpperCase()}`
-            .replace(/r/gi, '\u00AE');
+        let creditText = `WRITTEN BY ${writer.toUpperCase()}`
+            .replace(/r/gi, String.fromCodePoint(174));
+
         ctx.font = `${s.creditSize}px "${s.font}", Arial, sans-serif`;
         ctx.textAlign = "center";
         
