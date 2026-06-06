@@ -113,7 +113,8 @@ function handleTextInput() {
 function setupListeners() {
     const textInputs = ['user-title', 'user-writer'];
     const standardInputs = [
-        'template-select', 'user-font-size', 'user-writer-size',
+        'template-select', 'user-font-size', 'user-font-size-slider',
+        'user-writer-size', 'user-writer-size-slider',
         'user-color-1', 'user-color-2', 'user-voy-font', 'user-tos-font',
         'user-word-wrap', 'user-retro-filter'
     ];
@@ -137,6 +138,20 @@ function setupListeners() {
             el.addEventListener('change', generateCard);
         }
     });
+
+    const titleSizeInput = document.getElementById('user-font-size');
+    const titleSizeSlider = document.getElementById('user-font-size-slider');
+    if (titleSizeInput && titleSizeSlider) {
+        titleSizeSlider.addEventListener('input', () => { titleSizeInput.value = titleSizeSlider.value; });
+        titleSizeInput.addEventListener('input', () => { titleSizeSlider.value = titleSizeInput.value; });
+    }
+
+    const writerSizeInput = document.getElementById('user-writer-size');
+    const writerSizeSlider = document.getElementById('user-writer-size-slider');
+    if (writerSizeInput && writerSizeSlider) {
+        writerSizeSlider.addEventListener('input', () => { writerSizeInput.value = writerSizeSlider.value; });
+        writerSizeInput.addEventListener('input', () => { writerSizeSlider.value = writerSizeInput.value; });
+    }
 
     const reset1 = document.getElementById('reset-color-1');
     if (reset1) {
@@ -269,10 +284,14 @@ function openEditor(fullName, code) {
     if (tosFontSelect) tosFontSelect.value = "default";
 
     const sizeInput = document.getElementById('user-font-size');
-    if (sizeInput) sizeInput.value = "";
+    const sizeSlider = document.getElementById('user-font-size-slider');
+    if (sizeInput) sizeInput.value = initialTemplate.size;
+    if (sizeSlider) sizeSlider.value = initialTemplate.size;
 
     const writerSizeInput = document.getElementById('user-writer-size');
-    if (writerSizeInput) writerSizeInput.value = "";
+    const writerSizeSlider = document.getElementById('user-writer-size-slider');
+    if (writerSizeInput) writerSizeInput.value = initialTemplate.creditSize || 40;
+    if (writerSizeSlider) writerSizeSlider.value = initialTemplate.creditSize || 40;
 
     const color1Input = document.getElementById('user-color-1');
     const color2Input = document.getElementById('user-color-2');
@@ -284,6 +303,12 @@ function openEditor(fullName, code) {
         const currentTemplate = seriesData[currentSeries].templates[currentTempIndex];
         if (writerGroup) writerGroup.style.display = (currentTemplate.showCredit) ? "block" : "none";
         if (writerSizeGroup) writerSizeGroup.style.display = (currentTemplate.showCredit) ? "block" : "none";
+        
+        if (sizeInput) sizeInput.value = currentTemplate.size;
+        if (sizeSlider) sizeSlider.value = currentTemplate.size;
+        if (writerSizeInput) writerSizeInput.value = currentTemplate.creditSize || 40;
+        if (writerSizeSlider) writerSizeSlider.value = currentTemplate.creditSize || 40;
+
         updateControlVisibility(currentTemplate, currentSeries);
         syncColorPickers();
         generateCard();
