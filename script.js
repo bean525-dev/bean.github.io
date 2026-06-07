@@ -415,10 +415,19 @@ async function generateCard() {
     }
 	let textInputProcessed = textInput;
     if (currentSeries === "TOS") {
-        textInputProcessed = textInput            
-            .replace(/(^|[\s"({[-])"/g, "$1\u201C")
-            .replace(/"/g, "\u201D")            
-            .replace(/'/g, "\u2019");
+        const tosFontSelect = document.getElementById('user-tos-font');
+        const isFont2 = tosFontSelect && tosFontSelect.value === "TOS_Title2";
+
+        if (isFont2) {            
+            textInputProcessed = textInput
+                .replace(/"/g, "\u201D")
+                .replace(/'/g, "\u2019");
+        } else {            
+            textInputProcessed = textInput
+                .replace(/(^|[\s"({[-])"/g, "$1\u201C")
+                .replace(/"/g, "\u201D")
+                .replace(/'/g, "\u2019");
+        }
     }
 
     let title = (currentSeries === "TNG" || currentSeries === "ENT" || currentSeries === "LD") ? textInputProcessed : textInputProcessed.toUpperCase();
@@ -554,8 +563,11 @@ function formatQuotesForLines(linesArray) {
     });
 
     if (firstTextLineIndex === -1) return linesArray;
-    
-    const leftQuote = (currentSeries === "TOS") ? "\u201C" : "\"";
+
+    const tosFontSelect = document.getElementById('user-tos-font');
+    const isFont2 = tosFontSelect && tosFontSelect.value === "TOS_Title2";
+
+    const leftQuote = (currentSeries === "TOS") ? (isFont2 ? "\u201D" : "\u201C") : "\"";
     const rightQuote = (currentSeries === "TOS") ? "\u201D" : "\"";
 
     return linesArray.map((line, index) => {
