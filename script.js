@@ -413,9 +413,17 @@ async function generateCard() {
             activeFont = userTosFont;
         }
     }
+	let textInputProcessed = textInput;
+    if (currentSeries === "TOS") {
+        textInputProcessed = textInput            
+            .replace(/(^|[\s"({[-])"/g, "$1\u201C")
+            .replace(/"/g, "\u201D")            
+            .replace(/'/g, "\u2019");
+    }
 
-    let title = (currentSeries === "TNG" || currentSeries === "ENT" || currentSeries === "LD") ? textInput : textInput.toUpperCase();
+    let title = (currentSeries === "TNG" || currentSeries === "ENT" || currentSeries === "LD") ? textInputProcessed : textInputProcessed.toUpperCase();
 
+    
     try {
         await document.fonts.load(`${activeSize}px "${activeFont}"`);
         if (s.showCredit) {
@@ -546,16 +554,19 @@ function formatQuotesForLines(linesArray) {
     });
 
     if (firstTextLineIndex === -1) return linesArray;
+    
+    const leftQuote = (currentSeries === "TOS") ? "\u201C" : "\"";
+    const rightQuote = (currentSeries === "TOS") ? "\u201D" : "\"";
 
     return linesArray.map((line, index) => {
         let processedLine = line;
         if (index === firstTextLineIndex) {
             const leadingSpaces = line.match(/^\s*/)[0];
             const content = line.trimStart();
-            processedLine = `${leadingSpaces}"${content}`;
+            processedLine = `${leadingSpaces}${leftQuote}${content}`;
         }
         if (index === lastTextLineIndex) {
-            processedLine = `${processedLine}"`;
+            processedLine = `${processedLine}${rightQuote}`;
         }
         return processedLine;
     });
