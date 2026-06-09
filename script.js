@@ -14,9 +14,9 @@ const seriesData = {
         templates: [
             { name: "Planet Orbit", bg: "TOS_bg.jpg", font: "TOS-Font", color: "#ffff00", size: 120, x: 0.08, y: 0.15, indent: 120, spacing: 30 },
             { name: "Mirror Planet Orbit", bg: "TOS_mirror_orig.png", font: "TOS-Font", color: "#ffff00", size: 120, x: 0.08, y: 0.15, indent: 100, spacing: 20 },
-			{ name: "Mirror Planet Orbit (Remastered)", bg: "TOS_mirror.png", font: "TOS-Font", color: "#ffff00", size: 120, x: 0.08, y: 0.15, indent: 100, spacing: 20 },
+            { name: "Mirror Planet Orbit (Remastered)", bg: "TOS_mirror.png", font: "TOS-Font", color: "#ffff00", size: 120, x: 0.08, y: 0.15, indent: 100, spacing: 20 },
             { name: "Spock's Brain", bg: "TOS_spocksbrain.png", font: "TOS-Font", color: "#7da6ff", size: 160, x: 0.30, y: 0.68, indent: 75, spacing: 20 },
-			{ name: "Spock's Brain (Remastered)", bg: "TOS_hull.png", font: "TOS-Font", color: "#7da6ff", size: 100, x: 0.25, y: 0.68, indent: 75, spacing: 20 },
+            { name: "Spock's Brain (Remastered)", bg: "TOS_hull.png", font: "TOS-Font", color: "#7da6ff", size: 100, x: 0.25, y: 0.68, indent: 75, spacing: 20 },
             { name: "The Ultimate Computer", bg: "TOS_ultcomp_orig.png", font: "TOS-Font", color: "#dcb442", size: 160, x: 0.5, y: 0.22, spacing: 25, showCredit: true, creditSize: 130, writerSpacing: 70, centerText: true },
             { name: "The Tholian Web", bg: "TOS_tholian.png", font: "TOS-Font", color: "#7da6ff", size: 100, x: 0.20, y: 0.68, indent: 75, spacing: 20 }
         ]
@@ -24,7 +24,7 @@ const seriesData = {
     "TAS": {
         aspectRatio: "4:3",
         templates: [
-		{ name: "Planet", bg: "TAS_bg.png", font: "TAS-Font", color: "#dcb442", size: 210, x: 0.12, y: 0.10, creditSize: 60, showCredit: true, spacing: 0.88 }
+            { name: "Planet", bg: "TAS_bg.png", font: "TAS-Font", color: "#dcb442", size: 210, x: 0.12, y: 0.10, creditSize: 60, showCredit: true, spacing: 0.88 }
         ]
     },
     "TNG": {
@@ -39,9 +39,9 @@ const seriesData = {
         aspectRatio: "4:3",
         templates: [            
             { name: "Station", bg: "DS9_bg.jpg", font: "DS9-Font", top: "#e0e0e0", bottom: "#7da6ff", size: 86, x: 0.1, y: 0.12 },
-            { name: "Defiant", bg: "DS9_favor.png", font: "DS9-Font", top: "#e0e0e0", bottom: "#7da6ff", size: 86, x: 0.1, y: 0.12 },			
+            { name: "Defiant", bg: "DS9_favor.png", font: "DS9-Font", top: "#e0e0e0", bottom: "#7da6ff", size: 86, x: 0.1, y: 0.12 },            
             { name: "Station View 2", bg: "DS9_adversary.png", font: "DS9-Font", top: "#e0e0e0", bottom: "#7da6ff", size: 86, x: 0.1, y: 0.12 },
-			{ name: "Runabout", bg: "DS9_runabout.png", font: "DS9-Font", top: "#e0e0e0", bottom: "#7da6ff", size: 86, x: 0.1, y: 0.12 },
+            { name: "Runabout", bg: "DS9_runabout.png", font: "DS9-Font", top: "#e0e0e0", bottom: "#7da6ff", size: 86, x: 0.1, y: 0.12 },
             { name: "Station View 3", bg: "DS9_shakaar.png", font: "DS9-Font", top: "#e0e0e0", bottom: "#7da6ff", size: 82, x: 0.12, y: 0.10 }
         ]
     },
@@ -59,7 +59,7 @@ const seriesData = {
             { name: "Overhead", bg: "ENT_andorian.png", font: "ENT-Font", top: "#f9f9f9", bottom: "#7d7d7d", size: 60, x: 0.08, y: 0.12 },
             { name: "Side View", bg: "ENT_proving.png", font: "ENT-Font", top: "#f9f9f9", bottom: "#7d7d7d", size: 60, x: 0.08, y: 0.08 },
             { name: "Battle Damage", bg: "ENT_stormfront.png", font: "ENT-Font", top: "#f9f9f9", bottom: "#7d7d7d", size: 50, x: 0.06, y: 0.08 }
-        ]		
+        ]        
     },
     "DIS": {
         aspectRatio: "16:9",
@@ -69,24 +69,35 @@ const seriesData = {
             { name: "Will You Take My Hand", bg: "DIS_takehand.png", font: "DIS-Font", top: "#f9f9f9", bottom: "#7d7d7d", size: 65, x: 0.06, y: 0.08 }
         ]
     },    
-	"ST": {
+    "ST": {
         aspectRatio: "2.39:1",
         templates: [
             { name: "Calypso", bg: "ST_calypso_bg.png", texture: "ST_calypso_txt.png", font: "ST-Font", size: 380, style: "masked" },
             { name: "Ephraim and Dot", bg: "ST_ephraim.png", font: "ST-Font", top: "#bd1616", bottom: "#7d0003", size: 380, style: "shadow-stroke" },
             { name: "The Escape Artist", bg: "ST_escape_bg.png", font: "ST-Font", top: "#970000", bottom: "#7d0003", size: 360, style: "echo" },
             { name: "Runaway", bg: "ST_ephraim.png", texture: "ST_runaway_texture.png", font: "ST-Font", top: "#e03a3a", size: 360, style: "masked" },            
-			{ name: "The Girl Who Made the Stars", bg: "ST_stars_bg.png", texture: "ST_girlstars_texture2.png", font: "ST-Font", top: "#ffffff", bottom: "#ffffff", size: 360, style: "masked-cosmic", hideGradients: true }
+            { name: "The Girl Who Made the Stars", bg: "ST_stars_bg.png", texture: "ST_girlstars_texture2.png", font: "ST-Font", top: "#ffffff", bottom: "#ffffff", size: 360, style: "masked-cosmic", hideGradients: true }
         ]
-    },	
+    },    
+    "PIC": {
+        aspectRatio: "2.39:1",
+        templates: [
+            { name: "Vinyard", bg: "PIC_vinyard.png", font: "PIC-Font", top: "#a4a4a4", bottom: "#ffffff", size: 125, x: 0.08, y: 0.12 },
+            { name: "La Sirena", bg: "PIC_lasirenna.png", font: "PIC-Font", top: "#a4a4a4", bottom: "#ffffff", size: 125, x: 0.08, y: 0.12 },
+            { name: "Season 3", bg: "PIC_starfield.png", font: "PIC2-Font", color: "#5286ff", size: 82, style: "pic-season3" },
+            { name: "Titan-A", bg: "PIC_titan.png", font: "PIC-Font", top: "#a4a4a4", bottom: "#ffffff", size: 125, x: 0.08, y: 0.12 },
+            { name: "Enterprise-D", bg: "PIC_enterprise_d.png", font: "PIC-Font", top: "#a4a4a4", bottom: "#ffffff", size: 125, x: 0.08, y: 0.12 },            
+            { name: "Enterprise-G", bg: "PIC_enterprise_g.png", font: "PIC-Font", top: "#a4a4a4", bottom: "#ffffff", size: 125, x: 0.08, y: 0.12 }
+        ]
+    },
     "PRO": {
         aspectRatio: "2.39:1",
         templates: [
             { name: "Nebula", bg: "PRO_titles.png", font: "PRO-Font", top: "#ffffff", bottom: "#ffffff", size: 70, showCredit: true, creditSize: 50, centerText: true },
-			{ name: "Protostar", bg: "PRO_protostar.png", font: "PRO-Font", top: "#ffffff", bottom: "#ffffff", size: 82, x: 0.08, y: 0.12 } ,
-			{ name: "Protostar 2", bg: "PRO_protostar2.png", font: "PRO-Font", top: "#ffffff", bottom: "#ffffff", size: 82, x: 0.08, y: 0.12 } ,
-			{ name: "Voyager-A/Protostar", bg: "PRO_provoya.png", font: "PRO-Font", top: "#ffffff", bottom: "#ffffff", size: 82, x: 0.08, y: 0.12 } ,
-			{ name: "Voyager-A Solo", bg: "PRO_voyager_a.png", font: "PRO-Font", top: "#ffffff", bottom: "#ffffff", size: 82, x: 0.08, y: 0.12 }
+            { name: "Protostar", bg: "PRO_protostar.png", font: "PRO-Font", top: "#ffffff", bottom: "#ffffff", size: 82, x: 0.08, y: 0.12 } ,
+            { name: "Protostar 2", bg: "PRO_protostar2.png", font: "PRO-Font", top: "#ffffff", bottom: "#ffffff", size: 82, x: 0.08, y: 0.12 } ,
+            { name: "Voyager-A/Protostar", bg: "PRO_provoya.png", font: "PRO-Font", top: "#ffffff", bottom: "#ffffff", size: 82, x: 0.08, y: 0.12 } ,
+            { name: "Voyager-A Solo", bg: "PRO_voyager_a.png", font: "PRO-Font", top: "#ffffff", bottom: "#ffffff", size: 82, x: 0.08, y: 0.12 }
         ]
     },
     "LD": {
@@ -298,6 +309,40 @@ function openEditor(fullName, code) {
     if (color1Input) color1Input.dataset.override = "false";
     if (color2Input) color2Input.dataset.override = "false";
 
+    const manageSeason3Inputs = (template) => {
+        let partGroup = document.getElementById('picard-season3-part-group');
+        const titleInput = document.getElementById('user-title');
+        if (!titleInput) return;
+        const titleGroup = titleInput.parentElement;
+        
+        if (template.style === "pic-season3") {
+            if (!partGroup) {
+                partGroup = document.createElement('div');
+                partGroup.id = 'picard-season3-part-group';
+                partGroup.className = 'input-group';
+                partGroup.style.marginBottom = '15px';
+                partGroup.innerHTML = `
+                    <label style="display:block; font-size:0.8rem; margin-bottom:5px; color:#f0ad4e; font-weight:bold;">PART NUMBER / PREFIX</label>
+                    <input type="text" id="user-part-season3" value="PART FOUR" autocomplete="off" style="width:100%; padding:12px; background:#222; border:1px solid #444; color:#fff; border-radius:4px;">
+                `;
+                titleGroup.parentNode.insertBefore(partGroup, titleGroup);
+                
+                document.getElementById('user-part-season3').addEventListener('input', handleTextInput);
+                document.getElementById('user-part-season3').addEventListener('change', generateCard);
+            }
+            if (titleInput.previousElementSibling) {
+                titleInput.previousElementSibling.innerText = "EPISODE TITLE";
+            }
+        } else {
+            if (partGroup) {
+                partGroup.remove();
+            }
+            if (titleInput.previousElementSibling) {
+                titleInput.previousElementSibling.innerText = "EPISODE TITLE";
+            }
+        }
+    };
+
     select.onchange = () => {
         const currentTempIndex = document.getElementById('template-select').value || 0;
         const currentTemplate = seriesData[currentSeries].templates[currentTempIndex];
@@ -309,6 +354,7 @@ function openEditor(fullName, code) {
         if (writerSizeInput) writerSizeInput.value = currentTemplate.creditSize || 40;
         if (writerSizeSlider) writerSizeSlider.value = currentTemplate.creditSize || 40;
 
+        manageSeason3Inputs(currentTemplate);
         updateControlVisibility(currentTemplate, currentSeries);
         syncColorPickers();
         generateCard();
@@ -323,8 +369,15 @@ function openEditor(fullName, code) {
     else if (code === "DS9") titleBox.value = "In the Pale Moonlight";
     else if (code === "VOY") titleBox.value = "Threshold";
     else if (code === "ENT") titleBox.value = "The Andorian Incident";
-	else if (code === "DIS") titleBox.value = "What's Past Is Prologue";
+    else if (code === "DIS") titleBox.value = "What's Past Is Prologue";
     else if (code === "ST") titleBox.value = "Calypso";
+    else if (code === "PIC") {
+        if (initialTemplate.style === "pic-season3") {
+            titleBox.value = "No Win Scenario";
+        } else {
+            titleBox.value = "Remembrance";
+        }
+    }
     else if (code === "PRO") {
         titleBox.value = "Preludes";
         if (writerBox) writerBox.value = "Julie Benson\nShawna Benson\nKevin & Dan Hageman\nNikhil S. Jayaram";
@@ -334,6 +387,7 @@ function openEditor(fullName, code) {
 
     if (code !== "PRO" && writerBox) writerBox.value = "";
 
+    manageSeason3Inputs(initialTemplate);
     updateControlVisibility(initialTemplate, code);
     syncColorPickers();
     setupListeners(); 
@@ -413,7 +467,7 @@ async function generateCard() {
             activeFont = userTosFont;
         }
     }
-	let textInputProcessed = textInput;
+    let textInputProcessed = textInput;
     if (currentSeries === "TOS") {
         const tosFontSelect = document.getElementById('user-tos-font');
         const isFont2 = tosFontSelect && tosFontSelect.value === "TOS_Title2";
@@ -430,9 +484,8 @@ async function generateCard() {
         }
     }
 
-    let title = (currentSeries === "TNG" || currentSeries === "ENT" || currentSeries === "LD") ? textInputProcessed : textInputProcessed.toUpperCase();
+    let title = (currentSeries === "TNG" || currentSeries === "ENT" || currentSeries === "LD" || s.style === "pic-season3") ? textInputProcessed : textInputProcessed.toUpperCase();
 
-    
     try {
         await document.fonts.load(`${activeSize}px "${activeFont}"`);
         if (s.showCredit) {
@@ -491,12 +544,16 @@ async function generateCard() {
             drawTOS(title, writerInput, styleObject, activeSize, maxW);
         } else if (currentSeries === "TAS") {
             drawTAS(title, writerInput, styleObject, activeSize, maxW);
-		} else if (currentSeries === "DIS") {
-            drawDiscovery(title, styleObject, activeSize, maxW, s.lineHeightFactor || 0.65);	
+        } else if (currentSeries === "DIS") {
+            drawDiscovery(title, styleObject, activeSize, maxW, s.lineHeightFactor || 0.65);    
         } else if (currentSeries === "ST") {
             drawShortTreks(title, styleObject, activeSize, maxW);
         } else if (currentSeries === "PRO" && s.centerText) {
             drawProdigy(title, writerInput, styleObject, activeSize, maxW);
+        } else if (s.style === "pic-season3") {
+            const partElem = document.getElementById('user-part-season3');
+            const targetPart = partElem ? partElem.value : "";
+            drawPicardSeason3(title, targetPart, styleObject, maxW);
         } else {
             drawStandard(title, styleObject, activeSize, maxW);
         }
@@ -1147,6 +1204,83 @@ function drawProdigy(text, writer, s, size, maxW) {
             curY += creditLineHeight;
         });
     }
+}
+
+function drawPicardSeason3(mainTitle, titlePart, s, maxW) {
+    ctx.textAlign = "center";
+    ctx.textBaseline = "top";
+
+    const curX = canvas.width / 2;
+
+    let cleanPart = titlePart.trim().toUpperCase();
+    let cleanTitle = mainTitle.trim().replace(/^["'\u201C\u201D\u2018\u2019\s]*/, "").replace(/["'\u201C\u201D\u2018\u2019\s]*$/, "");
+    if (cleanTitle) {
+        cleanTitle = "\u201C" + cleanTitle + "\u201D";
+    }
+
+    const partFontSize = Math.round(s.size * 0.54); 
+    const titleLineHeight = s.size + 20;
+
+    ctx.font = `italic ${s.size}px "${s.font}", Arial, sans-serif`;
+    const titleLines = processLayoutLines(cleanTitle, canvas.width * 0.05, maxW);
+
+    const blueLineHeight = 5; 
+    const spacingTop = 8;     
+    const spacingBottom = 38;   
+
+    let totalHeight = 0;
+    if (cleanPart) {
+        totalHeight += partFontSize + spacingTop + blueLineHeight + spacingBottom;
+    }
+    totalHeight += titleLines.length * titleLineHeight - 20;
+
+    let curY = (canvas.height - totalHeight) / 2;
+
+    if (cleanPart) {
+        ctx.font = `${partFontSize}px "${s.font}", Arial, sans-serif`;
+        ctx.fillStyle = "#5286ff";
+
+        ctx.save();
+        ctx.fillStyle = "rgba(0, 0, 0, 0.9)";
+        applyShadowSettings(4);
+        ctx.fillText(cleanPart, curX + 3, curY + 3);
+        ctx.restore();
+
+        ctx.fillText(cleanPart, curX, curY);
+
+        const partMetrics = ctx.measureText(cleanPart);
+        const singleSpaceWidth = ctx.measureText(" ").width;
+        const dynamicLineWidth = partMetrics.width + (singleSpaceWidth * 4);
+        
+        curY += partFontSize + spacingTop;
+
+        const lx = curX - (dynamicLineWidth / 2);
+        
+        ctx.save();
+        ctx.fillStyle = "rgba(0, 0, 0, 0.85)";
+        applyShadowSettings(4);
+        ctx.fillRect(lx + 3, curY + 3, dynamicLineWidth, blueLineHeight);
+        ctx.restore();
+
+        ctx.fillStyle = "#5286ff"; 
+        ctx.fillRect(lx, curY, dynamicLineWidth, blueLineHeight);
+        
+        curY += blueLineHeight + spacingBottom;
+    }
+
+    ctx.font = `italic ${s.size}px "${s.font}", Arial, sans-serif`;
+    ctx.fillStyle = "#5286ff";
+
+    titleLines.forEach(line => {
+        ctx.save();
+        ctx.fillStyle = "rgba(0, 0, 0, 0.9)";
+        applyShadowSettings(6);
+        ctx.fillText(line, curX + 4, curY + 4);
+        ctx.restore();
+
+        ctx.fillText(line, curX, curY);
+        curY += titleLineHeight;
+    });
 }
 
 function drawStandard(text, s, size, maxW) {

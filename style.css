@@ -9,6 +9,8 @@
 @font-face { font-family: 'DIS-Font'; src: url('fonts/DIS_title.ttf'); }
 @font-face { font-family: 'ST-Font'; src: url('fonts/ST_title.ttf');   }
 @font-face { font-family: 'PRO-Font'; src: url('fonts/PRO_title.otf'); }
+@font-face { font-family: 'PIC-Font'; src: url('fonts/PIC_title.ttf'); }
+@font-face { font-family: 'PIC2-Font'; src: url('fonts/Eurostile Extended Regular.ttf'); }
 
 body { background: #000; color: #f0ad4e; font-family: 'Segoe UI', sans-serif; margin: 0; text-align: center; }
 .container { max-width: 1100px; margin: 0 auto; padding: 40px 20px; }
