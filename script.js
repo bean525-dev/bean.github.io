@@ -31,7 +31,10 @@ const seriesData = {
         aspectRatio: "4:3",
         templates: [
             { name: "Standard", bg: "TNG_bg.jpg", font: "TNG-Font", color: "#5286ff", size: 86, x: 0.08, y: 0.12 }, 
+			{ name: "Q Field", bg: "TNG_qfield.png", font: "TNG-Font", color: "#5286ff", size: 86, x: 0.05, y: 0.08 },
             { name: "Alternate", bg: "TNG_enemy.png", font: "TNG-Font", color: "#5286ff", size: 86, x: 0.05, y: 0.08 },
+			{ name: "Best of Both Worlds", bg: "TNG_bothworlds.png", font: "TNG-Font", color: "#5286ff", size: 86, x: 0.05, y: 0.08 },
+			{ name: "Starbase", bg: "TNG_starbase.png", font: "TNG-Font", color: "#5286ff", size: 86, x: 0.08, y: 0.12 },
             { name: "Asteroid", bg: "TNG_asteroid.png", font: "TNG-Font", color: "#5286ff", size: 86, x: 0.12, y: 0.12 }
         ]
     },
