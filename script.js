@@ -705,8 +705,16 @@ function drawTOS(text, writer, s, size, maxW) {
         applyShadowSettings(6);
         ctx.fillText("WRITTEN BY", curX + 4, curY + 4);
         clearShadowSettings();
-        
-        ctx.fillStyle = s.bottom ? s.top : s.color;
+                
+        if (s.bottom) {
+            let grad = ctx.createLinearGradient(curX, curY, curX, curY + labelSize); // Use labelSize here!
+            grad.addColorStop(0, s.top);
+            grad.addColorStop(1, s.bottom);
+            ctx.fillStyle = grad;
+        } else {
+            ctx.fillStyle = s.color;
+        }       
+
         ctx.fillText("WRITTEN BY", curX, curY);
         
         curY += labelSize + 10; 
