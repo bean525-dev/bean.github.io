@@ -12,64 +12,64 @@ const seriesData = {
     "TOS": {
         aspectRatio: "4:3",
         templates: [
-            { name: "Planet Orbit", bg: "TOS_bg.jpg", font: "TOS-Font", color: "#ffff00", size: 120, x: 0.08, y: 0.15, indent: 120, spacing: 30 },
-            { name: "Mirror Planet Orbit", bg: "TOS_mirror_orig.png", font: "TOS-Font", color: "#ffff00", size: 120, x: 0.08, y: 0.15, indent: 100, spacing: 20 },
-            { name: "Mirror Planet Orbit (Remastered)", bg: "TOS_mirror.png", font: "TOS-Font", color: "#ffff00", size: 120, x: 0.08, y: 0.15, indent: 100, spacing: 20 },
-            { name: "Spock's Brain", bg: "TOS_spocksbrain.png", font: "TOS-Font", color: "#7da6ff", size: 160, x: 0.30, y: 0.68, indent: 75, spacing: 20 },
-            { name: "Spock's Brain (Remastered)", bg: "TOS_hull.png", font: "TOS-Font", color: "#7da6ff", size: 100, x: 0.25, y: 0.68, indent: 75, spacing: 20 },
-            { name: "The Ultimate Computer", bg: "TOS_ultcomp_orig.png", font: "TOS-Font", color: "#dcb442", size: 160, x: 0.5, y: 0.22, spacing: 25, showCredit: true, creditSize: 130, writerSpacing: 70, centerText: true },
-            { name: "The Tholian Web", bg: "TOS_tholian.png", font: "TOS-Font", color: "#7da6ff", size: 100, x: 0.20, y: 0.68, indent: 75, spacing: 20 }
+            { name: "Planet Orbit", bg: "TOS_bg.jpg", font: "TOS-Font", top: "#ffff00", bottom: "#ffff00", size: 120, x: 0.08, y: 0.15, indent: 120, spacing: 30 },
+            { name: "Mirror Planet Orbit", bg: "TOS_mirror_orig.png", font: "TOS-Font", top: "#ffff00", bottom: "#ffff00", size: 120, x: 0.08, y: 0.15, indent: 100, spacing: 20 },
+            { name: "Mirror Planet Orbit (Remastered)", bg: "TOS_mirror.png", font: "TOS-Font", top: "#ffff00", bottom: "#ffff00", size: 120, x: 0.08, y: 0.15, indent: 100, spacing: 20 },
+            { name: "Spock's Brain", bg: "TOS_spocksbrain.png", font: "TOS-Font", top: "#7da6ff", bottom: "#7da6ff", size: 160, x: 0.30, y: 0.68, indent: 75, spacing: 20 },
+            { name: "Spock's Brain (Remastered)", bg: "TOS_hull.png", font: "TOS-Font", top: "#7da6ff", bottom: "#7da6ff", size: 100, x: 0.25, y: 0.68, indent: 75, spacing: 20 },
+            { name: "The Ultimate Computer", bg: "TOS_ultcomp_orig.png", font: "TOS-Font", top: "#dcb442", bottom: "#dcb442", size: 175, x: 0.5, y: 0.22, spacing: 25, showCredit: true, creditSize: 130, writerSpacing: 70, centerText: true },
+            { name: "The Tholian Web", bg: "TOS_tholian.png", font: "TOS-Font", top: "#7da6ff", bottom: "#7da6ff", size: 100, x: 0.20, y: 0.68, indent: 75, spacing: 20 }
         ]
     },
     "TAS": {
         aspectRatio: "4:3",
         templates: [
-            { name: "Planet", bg: "TAS_bg.png", font: "TAS-Font", color: "#dcb442", size: 210, x: 0.12, y: 0.10, creditSize: 60, showCredit: true, spacing: 0.88 }
+            { name: "Planet", bg: "TAS_bg.png", font: "TAS-Font", top: "#dcb442", bottom: "#dcb442", size: 210, x: 0.12, y: 0.10, creditSize: 60, showCredit: true, spacing: 0.88 }
         ]
     },
     "TNG": {
         aspectRatio: "4:3",
         templates: [
-            { name: "Standard", bg: "TNG_bg.jpg", font: "TNG-Font", color: "#5286ff", size: 86, x: 0.08, y: 0.12 }, 
-			{ name: "Q Field", bg: "TNG_qfield.png", font: "TNG-Font", color: "#5286ff", size: 86, x: 0.05, y: 0.08 },
-            { name: "Alternate", bg: "TNG_enemy.png", font: "TNG-Font", color: "#5286ff", size: 86, x: 0.05, y: 0.08 },
-			{ name: "Best of Both Worlds", bg: "TNG_bothworlds.png", font: "TNG-Font", color: "#5286ff", size: 86, x: 0.05, y: 0.08 },
-			{ name: "Starbase", bg: "TNG_starbase.png", font: "TNG-Font", color: "#5286ff", size: 86, x: 0.08, y: 0.12 },
-            { name: "Asteroid", bg: "TNG_asteroid.png", font: "TNG-Font", color: "#5286ff", size: 86, x: 0.12, y: 0.12 }
+            { name: "Standard", bg: "TNG_bg.jpg", font: "TNG-Font", top: "#5286ff", bottom: "#5286ff", size: 86, x: 0.08, y: 0.12 }, 
+			{ name: "Q Field", bg: "TNG_qfield.png", font: "TNG-Font", top: "#5286ff", bottom: "#5286ff", size: 86, x: 0.05, y: 0.08 },
+            { name: "Alternate", bg: "TNG_enemy.png", font: "TNG-Font", top: "#5286ff", bottom: "#5286ff", size: 86, x: 0.05, y: 0.08 },
+			{ name: "Best of Both Worlds", bg: "TNG_bothworlds.png", font: "TNG-Font", top: "#5286ff", bottom: "#5286ff", size: 86, x: 0.05, y: 0.08 },
+			{ name: "Starbase", bg: "TNG_starbase.png", font: "TNG-Font", top: "#5286ff", bottom: "#5286ff", size: 86, x: 0.08, y: 0.12 },
+            { name: "Asteroid", bg: "TNG_asteroid.png", font: "TNG-Font", top: "#5286ff", bottom: "#5286ff", size: 86, x: 0.12, y: 0.12 }
         ]
     },
     "DS9": {
         aspectRatio: "4:3",
         templates: [            
-            { name: "Station", bg: "DS9_bg.jpg", font: "DS9-Font", top: "#bbb4a3", bottom: "#bbb4a3", size: 86, x: 0.1, y: 0.12 },
-            { name: "Defiant", bg: "DS9_favor.png", font: "DS9-Font", top: "#bbb4a3", bottom: "#bbb4a3", size: 86, x: 0.1, y: 0.12 },            
-            { name: "Station View 2", bg: "DS9_adversary.png", font: "DS9-Font", top: "#bbb4a3", bottom: "#bbb4a3", size: 86, x: 0.1, y: 0.12 },
-            { name: "Runabout", bg: "DS9_runabout.png", font: "DS9-Font", top: "#bbb4a3", bottom: "#bbb4a3", size: 86, x: 0.1, y: 0.12 },
-            { name: "Station View 3", bg: "DS9_shakaar.png", font: "DS9-Font", top: "#bbb4a3", bottom: "#bbb4a3", size: 82, x: 0.12, y: 0.10 }
+            { name: "Station", bg: "DS9_bg.jpg", font: "DS9-Font", top: "#e0e0e0", bottom: "#7da6ff", size: 86, x: 0.1, y: 0.12 },
+            { name: "Defiant", bg: "DS9_favor.png", font: "DS9-Font", top: "#e0e0e0", bottom: "#7da6ff", size: 86, x: 0.1, y: 0.12 },            
+            { name: "Station View 2", bg: "DS9_adversary.png", font: "DS9-Font", top: "#e0e0e0", bottom: "#7da6ff", size: 86, x: 0.1, y: 0.12 },
+            { name: "Runabout", bg: "DS9_runabout.png", font: "DS9-Font", top: "#e0e0e0", bottom: "#7da6ff", size: 86, x: 0.1, y: 0.12 },
+            { name: "Station View 3", bg: "DS9_shakaar.png", font: "DS9-Font", top: "#e0e0e0", bottom: "#7da6ff", size: 82, x: 0.12, y: 0.10 }
         ]
     },
     "VOY": {
         aspectRatio: "4:3",
         templates: [            
-            { name: "Zoomed Out", bg: "VOY_bg.jpg", font: "VOY-Font", top: "#bbb4a3", bottom: "#bbb4a3", size: 90, x: 0.08, y: 0.12 },
-            { name: "Underside", bg: "VOY_latent.png", font: "VOY-Font", top: "#bbb4a3", bottom: "#bbb4a3", size: 90, x: 0.12, y: 0.08 },
-            { name: "Overview", bg: "VOY_facto.png", font: "Galaxy-Font", top: "#bbb4a3", bottom: "#bbb4a3", size: 82, x: 0.08, y: 0.12 }
+            { name: "Zoomed Out", bg: "VOY_bg.jpg", font: "VOY-Font", top: "#ff4f00", bottom: "#ffcc99", size: 90, x: 0.08, y: 0.12 },
+            { name: "Underside", bg: "VOY_latent.png", font: "VOY-Font", top: "#ff4f00", bottom: "#ffcc99", size: 90, x: 0.12, y: 0.08 },
+            { name: "Overview", bg: "VOY_facto.png", font: "Galaxy-Font", top: "#ff4f00", bottom: "#ffcc99", size: 82, x: 0.08, y: 0.12 }
         ]
     },
     "ENT": {
         aspectRatio: "16:9",
         templates: [            
-            { name: "Overhead", bg: "ENT_andorian.png", font: "ENT-Font", top: "#bbb4a3", bottom: "#bbb4a3", size: 60, x: 0.08, y: 0.12 },
-            { name: "Side View", bg: "ENT_proving.png", font: "ENT-Font", top: "#bbb4a3", bottom: "#bbb4a3", size: 60, x: 0.08, y: 0.08 },
-            { name: "Battle Damage", bg: "ENT_stormfront.png", font: "ENT-Font", top: "#bbb4a3", bottom: "#bbb4a3", size: 50, x: 0.06, y: 0.08 }
+            { name: "Overhead", bg: "ENT_andorian.png", font: "ENT-Font", top: "#f9f9f9", bottom: "#7d7d7d", size: 60, x: 0.08, y: 0.12 },
+            { name: "Side View", bg: "ENT_proving.png", font: "ENT-Font", top: "#f9f9f9", bottom: "#7d7d7d", size: 60, x: 0.08, y: 0.08 },
+            { name: "Battle Damage", bg: "ENT_stormfront.png", font: "ENT-Font", top: "#f9f9f9", bottom: "#7d7d7d", size: 50, x: 0.06, y: 0.08 }
         ]        
     },
     "DIS": {
         aspectRatio: "16:9",
         templates: [            
-            { name: "Discovery Titles", bg: "DIS_titles.png", font: "DIS-Font", top: "#bbb4a3", bottom: "#bbb4a3", size: 65, x: 0.08, y: 0.7 },
-            { name: "Past Is Prologue", bg: "DIS_pastpro.png", font: "DIS-Font", top: "#bbb4a3", bottom: "#bbb4a3", size: 65, x: 0.08, y: 0.08 },
-            { name: "Will You Take My Hand", bg: "DIS_takehand.png", font: "DIS-Font", top: "#bbb4a3", bottom: "#bbb4a3", size: 65, x: 0.06, y: 0.08 }
+            { name: "Discovery Titles", bg: "DIS_titles.png", font: "DIS-Font", top: "#0f0b0e", bottom: "#0f0b0e", size: 65, x: 0.08, y: 0.7 },
+            { name: "Past Is Prologue", bg: "DIS_pastpro.png", font: "DIS-Font", top: "#0f0b0e", bottom: "#0f0b0e", size: 65, x: 0.08, y: 0.08 },
+            { name: "Will You Take My Hand", bg: "DIS_takehand.png", font: "DIS-Font", top: "#f9f9f9", bottom: "#7d7d7d", size: 65, x: 0.06, y: 0.08 }
         ]
     },    
     "ST": {
@@ -85,31 +85,31 @@ const seriesData = {
     "PIC": {
         aspectRatio: "2.39:1",
         templates: [
-            { name: "Vinyard", bg: "PIC_vinyard.png", font: "PIC-Font", top: "#bbb4a3", bottom: "#bbb4a3", size: 125, x: 0.08, y: 0.12 },
-            { name: "La Sirena", bg: "PIC_lasirenna.png", font: "PIC-Font", top: "#bbb4a3", bottom: "#bbb4a3", size: 125, x: 0.08, y: 0.12 },
+            { name: "Vinyard", bg: "PIC_vinyard.png", font: "PIC-Font", top: "#a4a4a4", bottom: "#ffffff", size: 125, x: 0.08, y: 0.12 },
+            { name: "La Sirena", bg: "PIC_lasirenna.png", font: "PIC-Font", top: "#a4a4a4", bottom: "#ffffff", size: 125, x: 0.08, y: 0.12 },
             { name: "Season 3", bg: "PIC_starfield.png", font: "PIC2-Font", color: "#5286ff", size: 82, style: "pic-season3" },
-            { name: "Titan-A", bg: "PIC_titan.png", font: "PIC-Font", top: "#bbb4a3", bottom: "#bbb4a3", size: 125, x: 0.08, y: 0.12 },
-            { name: "Enterprise-D", bg: "PIC_enterprise_d.png", font: "PIC-Font", top: "#bbb4a3", bottom: "#bbb4a3", size: 125, x: 0.08, y: 0.12 },            
-            { name: "Enterprise-G", bg: "PIC_enterprise_g.png", font: "PIC-Font", top: "#bbb4a3", bottom: "#bbb4a3", size: 125, x: 0.08, y: 0.12 }
+            { name: "Titan-A", bg: "PIC_titan.png", font: "PIC-Font", top: "#a4a4a4", bottom: "#ffffff", size: 125, x: 0.08, y: 0.12 },
+            { name: "Enterprise-D", bg: "PIC_enterprise_d.png", font: "PIC-Font", top: "#a4a4a4", bottom: "#ffffff", size: 125, x: 0.08, y: 0.12 },            
+            { name: "Enterprise-G", bg: "PIC_enterprise_g.png", font: "PIC-Font", top: "#a4a4a4", bottom: "#ffffff", size: 125, x: 0.08, y: 0.12 }
         ]
     },
     "PRO": {
         aspectRatio: "2.39:1",
         templates: [
-            { name: "Nebula", bg: "PRO_titles.png", font: "PRO-Font", top: "#bbb4a3", bottom: "#bbb4a3", size: 70, showCredit: true, creditSize: 50, centerText: true },
-            { name: "Protostar", bg: "PRO_protostar.png", font: "PRO-Font", top: "#bbb4a3", bottom: "#bbb4a3", size: 82, x: 0.08, y: 0.12 } ,
-            { name: "Protostar 2", bg: "PRO_protostar2.png", font: "PRO-Font", top: "#bbb4a3", bottom: "#bbb4a3", size: 82, x: 0.08, y: 0.12 } ,
-            { name: "Voyager-A/Protostar", bg: "PRO_provoya.png", font: "PRO-Font", top: "#bbb4a3", bottom: "#bbb4a3", size: 82, x: 0.08, y: 0.12 } ,
-            { name: "Voyager-A Solo", bg: "PRO_voyager_a.png", font: "PRO-Font", top: "#bbb4a3", bottom: "#bbb4a3", size: 82, x: 0.08, y: 0.12 }
+            { name: "Nebula", bg: "PRO_titles.png", font: "PRO-Font", top: "#ffffff", bottom: "#ffffff", size: 70, showCredit: true, creditSize: 50, centerText: true },
+            { name: "Protostar", bg: "PRO_protostar.png", font: "PRO-Font", top: "#ffffff", bottom: "#ffffff", size: 82, x: 0.08, y: 0.12 } ,
+            { name: "Protostar 2", bg: "PRO_protostar2.png", font: "PRO-Font", top: "#ffffff", bottom: "#ffffff", size: 82, x: 0.08, y: 0.12 } ,
+            { name: "Voyager-A/Protostar", bg: "PRO_provoya.png", font: "PRO-Font", top: "#ffffff", bottom: "#ffffff", size: 82, x: 0.08, y: 0.12 } ,
+            { name: "Voyager-A Solo", bg: "PRO_voyager_a.png", font: "PRO-Font", top: "#ffffff", bottom: "#ffffff", size: 82, x: 0.08, y: 0.12 }
         ]
     },
     "LD": {
         aspectRatio: "16:9",
         templates: [            
-            { name: "With Shuttle", bg: "LD_2nd.png", font: "TNG-Font", top: "#bbb4a3", bottom: "#bbb4a3", size: 82, x: 0.08, y: 0.12 },
-            { name: "Full View", bg: "LD_flee.png", font: "TNG-Font", top: "#bbb4a3", bottom: "#bbb4a3", size: 82, x: 0.08, y: 0.08 },
-            { name: "Planet", bg: "LD_dilated.png", font: "TNG-Font", top: "#bbb4a3", bottom: "#bbb4a3", size: 75, x: 0.10, y: 0.16 }
-        ]
+            { name: "With Shuttle", bg: "LD_2nd.png", font: "TNG-Font", top: "#5286ff", bottom: "#5286ff", size: 82, x: 0.08, y: 0.12 },
+            { name: "Full View", bg: "LD_flee.png", font: "TNG-Font", top: "#5286ff", bottom: "#5286ff", size: 82, x: 0.08, y: 0.08 },
+            { name: "Planet", bg: "LD_dilated.png", font: "TNG-Font", top: "#5286ff", bottom: "#5286ff", size: 75, x: 0.10, y: 0.16 }
+        ]    
     },
 	"SNW": {
         aspectRatio: "2.39:1",
