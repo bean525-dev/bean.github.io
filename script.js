@@ -120,6 +120,14 @@ const seriesData = {
             { name: "Cosmic", bg: "snw_cosmic.png", font: "TOS-Font", top: "#bbb4a3", bottom: "#bbb4a3", size: 140, x: 0.08, y: 0.15, indent: 100, spacing: 20 },            
         ]
     },
+	"SA": {
+        aspectRatio: "16:9",
+        templates: [
+            { name: "Athena", bg: "SA_athena.png", font: "Galaxy-Font", top: "#ffffff", bottom: "#ffffff", size: 90, x: 0.08, y: 0.08, indent: 120, spacing: 30 },
+            { name: "Academy", bg: "SA_academy.png", font: "Galaxy-Font", top: "#ffffff", bottom: "#ffffff", size: 90, x: 0.08, y: 0.08, indent: 120, spacing: 30 },
+            { name: "Wall of Fame", bg: "SA_walloffame.png", font: "Galaxy-Font", top: "#ffffff", bottom: "#ffffff", size: 90, x: 0.08, y: 0.15, indent: 120, spacing: 30 },                   
+        ]
+    },
 };
 
 function handleTextInput() {
@@ -429,6 +437,7 @@ function openEditor(fullName, code) {
     else if (code === "DIS") titleBox.value = "What's Past Is Prologue";
     else if (code === "ST") titleBox.value = "Calypso";
 	else if (code === "SNW") titleBox.value = "Ad Astra per Aspera";
+	else if (code === "SA") titleBox.value = "Kids These Days"
     else if (code === "PIC") {
         if (initialTemplate.style === "pic-season3") {
             titleBox.value = "No Win Scenario";

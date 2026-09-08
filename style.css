@@ -40,3 +40,4 @@ input[type="range"] { background: transparent; border: none; height: 10px; }
 .btn-download:hover { background: #f0ad4e; color: #000; }
 
 canvas { max-width: 100%; height: auto; border: 1px solid #333; margin-top: 20px; background: #000; }
+
